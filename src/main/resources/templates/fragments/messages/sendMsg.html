@@ -1,0 +1,19 @@
+<div id="sendMsg" th:fragment="sendMessage" xmlns:th="http://www.w3.org/1999/html">
+    <form th:action="@{/sendMessage/send}" th:object="${sendMsg}" method="post">
+        <table id="sendingMessageTable">
+            <tr>
+                <td>Adresat:</td>
+                <td><input type="text" id="addressee" name="addressee" autofocus="autofocus"> </td>
+            </tr>
+            <tr>
+                <td>Temat:</td>
+                <td><input type="text" id="subject" name="subject"> </td>
+            </tr>
+            <tr>
+                <td>Treść:</td>
+                <td><textarea class="msgContent" name="content" rows="12" th:value="${msgContent}"></textarea></td>
+            </tr>
+        </table>
+        <input type="submit" value="Wyślij">
+    </form>
+</div>

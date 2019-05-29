@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Message</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/defaultStyle.css}">
+</head>
+<body>
+<div id="container">
+    <div th:replace="fragments/header :: header"></div>
+
+    <div id="workspace">
+
+        <div th:replace="fragments/navigation :: navigation"></div>
+
+        <div id="content">
+            <a class="navLink" href="/sendMessage/send">Wyślij wiadomość</a>
+            <span th:if="${case=='sending'}"><div th:replace="fragments/messages/sendMsg :: sendMessage"></div></span>
+            <span th:if="${case=='recived'}"><div th:replace="fragments/messages/messageList :: messageList"></div></span>
+
+        </div>
+
+        <div style="clear:both;"></div>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+</div>
+</body>
+</html>

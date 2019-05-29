@@ -1,0 +1,94 @@
+body
+{
+    background-color: #373535;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    margin: 0 !important;
+}
+
+#header
+{
+    background-color: darkred;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#logoPosition {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#logo
+{
+    height: 100px;
+    width: 100px;
+    padding: 10px;
+    float: left;
+}
+
+#text
+{
+    float: left;
+}
+
+#workspace
+{
+    width: 1000px;
+    margin-right: auto;
+    margin-left: auto;
+    border: black 1px solid;
+}
+
+#navbar-left
+{
+    float: left;
+    padding: 4px 10px;
+    background-color: rgba(33,31,62,0.34);
+}
+
+#content
+{
+    float: left;
+}
+
+ul
+{
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    font-size: 18px;
+    height: 35px;
+    line-height: 200%;
+    display: inline-block;
+}
+
+ul a
+{
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+#sendingMessageTable {
+    width: auto;
+}
+
+#subject {
+    width: 700px;
+}
+
+#addressee {
+    width: 700px;
+}
+
+.msgContent{
+    width: 700px;
+    height: 200px;
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+}

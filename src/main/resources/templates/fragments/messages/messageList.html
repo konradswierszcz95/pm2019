@@ -1,0 +1,15 @@
+<div id="messageList" th:fragment="messageList">
+    <div th:if="${not #lists.isEmpty(recivedMsg)}">
+        <table class="recived-messages">
+            <tr>
+                <td>Autor</td>
+                <td>Temat</td>
+            </tr>
+            <tr th:each="recivedMsg : ${recivedMsg}">
+                <td th:text="${recivedMsg.author.employee.name+' '+recivedMsg.author.employee.surname}"></td>
+                <td th:text="${recivedMsg.subject}"></td>
+            </tr>
+        </table>
+    </div>
+    Test
+</div>
