@@ -1,15 +1,17 @@
 package pl.kspm.hello.service;
 
-import javafx.print.Collation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import pl.kspm.hello.config.UserContext;
 import pl.kspm.hello.model.Message;
-import pl.kspm.hello.model.UserConnector;
+import pl.kspm.hello.model.User;
 import pl.kspm.hello.repository.MessageRepository;
 import pl.kspm.hello.repository.UserConnectorRepository;
 import pl.kspm.hello.tools.MsgObject;
 
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Date;
 
 @Service
 public class MessageService {
@@ -20,19 +22,44 @@ public class MessageService {
 
     public int sendMsg(MsgObject msgObject) {
         Message m = new Message();
-        UserConnector user = this.userConnectorRepository.findFirstByEmployee_Login(msgObject.getAddressee());
+        User user = this.userConnectorRepository.findFirstByEmployee_Login(msgObject.getAddressee());
+
         m.setAddressee(user)
-                .setAuthor(user)
+                .setAuthor(UserContext.getCurrentUser())
                 .setSubject(msgObject.getSubject())
-                .setContent(msgObject.getContent());
+                .setContent(msgObject.getContent())
+                .setCreated(new Timestamp(new Date().getTime()));
 
         this.messageRepository.save(m);
 
         return 0;
     }
 
-    public Iterable<Message> currentUserRecivedMsg(int id) {
-        Iterable<Message> recivedMessages = this.messageRepository.findAllByAddresseeEquals(userConnectorRepository.findFirstById(2));
+    public Iterable<Message> currentUserRecivedMsg() {
+        Iterable<Message> recivedMessages = this.messageRepository
+                .findAllByAddresseeEquals(userConnectorRepository
+                        .findFirstById(UserContext.getCurrentUserId()));
+
         return recivedMessages;
+    }
+
+    public Iterable<Message> currentUserSendedMsg() {
+        Iterable<Message> sendedMessenges = this.messageRepository
+                .findAllByAuthorEquals(userConnectorRepository.findFirstById(UserContext.getCurrentUserId()));
+        return sendedMessenges;
+    }
+
+    public Message getMessageById(long msgId, long currentUserId) {
+        Message message = this.messageRepository.getMessageById(msgId);
+        long addresseId = message.getAddressee().getId();
+        long authorId = message.getAuthor().getId();
+
+        if (currentUserId == addresseId || currentUserId==authorId) {
+            return message;
+        } else {
+            return null;
+        }
+
+
     }
 }

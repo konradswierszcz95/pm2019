@@ -14,16 +14,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.kspm.hello.repository.UserConnectorRepository;
 import pl.kspm.hello.service.MyUserDetailsService;
 
-/*@EnableGlobalMethodSecurity (prePostEnabled = true)
+@EnableGlobalMethodSecurity (prePostEnabled = true)
 @EnableWebSecurity
-@EnableJpaRepositories (basePackageClasses = UserConnectorRepository.class)*/
+@EnableJpaRepositories (basePackageClasses = UserConnectorRepository.class)
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private MyUserDetailsService userDetailsService;
 
-    /*@Override
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
         .passwordEncoder(new PasswordEncoder() {
@@ -37,13 +37,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 return encode(charSequence).equals(s);
             }
         });
-    }*/
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        /*http.authorizeRequests().antMatchers("/**").authenticated()
-        .anyRequest().permitAll().and().formLogin().permitAll();*/
+        http.authorizeRequests().antMatchers("/**").authenticated()
+        .anyRequest().permitAll().and().formLogin().permitAll();
 
-        http.authorizeRequests().anyRequest().permitAll();
+//        http.authorizeRequests().anyRequest().permitAll();
     }
 }

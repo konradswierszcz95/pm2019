@@ -5,22 +5,19 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class MyUserDetails extends UserConnector implements UserDetails {
+public class MyUserDetails extends User implements UserDetails {
 
-    public MyUserDetails (UserConnector userConnector) {
-        super(userConnector);
+    public MyUserDetails (User user) {
+        super(user);
     }
 
     @Override
     public List<GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> result= new ArrayList<>();
-        for (Role role:super.getRoles()) {
-            result.add(new SimpleGrantedAuthority(role.getRolename()));
+        for (Role role : getRoles()) {
+            result.add(new SimpleGrantedAuthority("ROLE_"+role.getRolename()));
         }
 
         return result;

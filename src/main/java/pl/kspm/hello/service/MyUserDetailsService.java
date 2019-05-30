@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.kspm.hello.model.MyUserDetails;
-import pl.kspm.hello.model.UserConnector;
+import pl.kspm.hello.model.User;
 import pl.kspm.hello.repository.RoleInterface;
 import pl.kspm.hello.repository.UserConnectorRepository;
 
@@ -21,7 +21,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserConnector> optionalUserConnector = userConnectorRepository.findByEmployee_Login(username);
+        Optional<User> optionalUserConnector = userConnectorRepository.findByEmployee_Login(username);
 
         //Ogarnąć muszę o chuj chodzi z lambdami
         optionalUserConnector

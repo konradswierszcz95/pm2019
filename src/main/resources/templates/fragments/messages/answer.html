@@ -1,17 +1,17 @@
-<div id="sendMsg" th:fragment="sendMessage">
+<div id="sendMsg" th:fragment="answerMsg">
     <form th:action="@{/sendMessage/send}" th:object="${sendMsg}" method="post">
         <table id="sendingMessageTable">
             <tr>
                 <td>Adresat:</td>
-                <td><input type="text" id="addressee" name="addressee" autofocus="autofocus"> </td>
+                <td><input type="text" id="addressee" name="addressee" th:value="${msg.author.employee.login}"> </td>
             </tr>
             <tr>
                 <td>Temat:</td>
-                <td><input type="text" id="subject" name="subject"> </td>
+                <td><input type="text" id="subject" name="subject" th:value="'RE:'+${msg.subject}"> </td>
             </tr>
             <tr>
                 <td>Treść:</td>
-                <td><textarea class="msgContent" name="content" rows="12" th:value="${msgContent}"></textarea></td>
+                <td><textarea class="msgContent" name="content" autofocus="autofocus" rows="12" th:value="${msgContent}"></textarea></td>
             </tr>
         </table>
         <input type="submit" value="Wyślij">

@@ -4,13 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import pl.kspm.hello.model.*;
 import pl.kspm.hello.repository.RoleInterface;
 import pl.kspm.hello.repository.UserConnectorRepository;
-
-import java.sql.Timestamp;
-import java.util.Date;
 
 @Controller
 public class MainController {
@@ -19,7 +15,7 @@ public class MainController {
     @Autowired
     UserConnectorRepository userConnector;
 
-    @GetMapping("/")
+    @GetMapping("/hello")
     public String home(ModelMap modelMap) {
         modelMap.put("hello","Witaj świecie");
         return "hello";
@@ -45,7 +41,7 @@ public class MainController {
 
     @GetMapping("/ar")
     public String addRole() {
-        UserConnector user = userConnector.findFirstById(2);
+        User user = userConnector.findFirstById(2);
         user.addRole(roleInterface.findById(1));
         user.addRole(roleInterface.findById(2));
         user.addRole(roleInterface.findById(3));

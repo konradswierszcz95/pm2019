@@ -65,8 +65,8 @@ public class EmployeeService {
         account.setActive(false)
                 .setCreated(new Timestamp(new Date().getTime()));
 
-        UserConnector userConnector = new UserConnector();
-        userConnector.setEmployee(e)
+        User user = new User();
+        user.setEmployee(e)
                 .setAddress(address)
                 .setAccount(account);
         //===========================================================
@@ -115,7 +115,7 @@ public class EmployeeService {
             return 6;
         } else {
             sendEmail(userObject.getEmail(),content,token);
-            this.userConnectorRepository.save(userConnector);
+            this.userConnectorRepository.save(user);
             return 0;
         }
         //====================================================================

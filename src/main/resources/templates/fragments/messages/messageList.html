@@ -2,14 +2,15 @@
     <div th:if="${not #lists.isEmpty(recivedMsg)}">
         <table class="recived-messages">
             <tr>
-                <td>Autor</td>
-                <td>Temat</td>
+                <td class="toDes">Autor</td>
+                <td class="subjectDes">Temat</td>
+                <td class="dateDes">Otrzymano</td>
             </tr>
             <tr th:each="recivedMsg : ${recivedMsg}">
-                <td th:text="${recivedMsg.author.employee.name+' '+recivedMsg.author.employee.surname}"></td>
-                <td th:text="${recivedMsg.subject}"></td>
+                <td th:text="${recivedMsg.author.employee.name+' '+recivedMsg.author.employee.surname}" class="msgList"></td>
+                <td><a th:href="@{'/sendMessage/openedMessage/'+${recivedMsg.id}}" th:text="${recivedMsg.subject}" class="msgList"></td>
+                <td th:text="${recivedMsg.created}" class="msgList"></td>
             </tr>
         </table>
     </div>
-    Test
 </div>

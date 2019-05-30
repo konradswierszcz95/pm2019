@@ -1,0 +1,22 @@
+<a id="openMsg" th:fragment="openMessage">
+        <table id="sendingMessageTable">
+            <tr>
+                <td>Od:</td>
+                <td th:text="${openMsg.author.employee.name}+' '+${openMsg.author.employee.surname}"></th:text></td>
+            </tr>
+            <tr>
+                <td>Do:</td>
+                <td th:text="${openMsg.addressee.employee.name}+' '+${openMsg.addressee.employee.surname}"></th:text></td>
+            </tr>
+            <tr>
+                <td>Temat:</td>
+                <td th:text="${openMsg.subject}"></th:text></td>
+            </tr>
+            <tr>
+                <td>Treść:</td>
+                <td th:text="${openMsg.content}"></th:text></td>
+            </tr>
+        </table>
+
+    <span th:if="${currentUserId != openMsg.author.id}"> <a th:href="@{'/sendMessage/answer/'+${openMsg.id}}">Odpowiedz</span></a>
+</div>

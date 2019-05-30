@@ -11,8 +11,8 @@ public class Role {
 
     private String rolename;
 
-    @ManyToMany(mappedBy = "roles")
-    private List<UserConnector> usersList;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<User> usersList;
 
     public long getId() {
         return id;
@@ -31,11 +31,11 @@ public class Role {
         return this;
     }
 
-    public List<UserConnector> getUsersList() {
+    public List<User> getUsersList() {
         return usersList;
     }
 
-    public void setUsersList(List<UserConnector> usersList) {
+    public void setUsersList(List<User> usersList) {
         this.usersList = usersList;
     }
 }

@@ -1,6 +1,7 @@
 package pl.kspm.hello.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 public class Message {
@@ -11,15 +12,17 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "author_id")
-    private UserConnector author;
+    private User author;
 
     @ManyToOne
     @JoinColumn(name="addressee_id")
-    private UserConnector addressee;
+    private User addressee;
 
     private String subject;
 
     private String content;
+
+    private Timestamp created;
 
     public long getId() {
         return id;
@@ -47,21 +50,29 @@ public class Message {
         return this;
     }
 
-    public UserConnector getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
-    public Message setAuthor(UserConnector author) {
+    public Message setAuthor(User author) {
         this.author = author;
         return this;
     }
 
-    public UserConnector getAddressee() {
+    public User getAddressee() {
         return addressee;
     }
 
-    public Message setAddressee(UserConnector addressee) {
+    public Message setAddressee(User addressee) {
         this.addressee = addressee;
         return this;
+    }
+
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
     }
 }

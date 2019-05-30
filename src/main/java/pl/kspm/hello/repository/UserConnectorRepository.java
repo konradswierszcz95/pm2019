@@ -2,17 +2,17 @@ package pl.kspm.hello.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import pl.kspm.hello.model.Role;
-import pl.kspm.hello.model.UserConnector;
+import pl.kspm.hello.model.User;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserConnectorRepository extends CrudRepository<UserConnector,Integer> {
-    Optional<UserConnector> findByEmployee_Login(String username);
+public interface UserConnectorRepository extends CrudRepository<User,Integer> {
+    Optional<User> findByEmployee_Login(String username);
 
-    UserConnector findFirstByEmployee_Login(String username);
+    User findFirstByEmployee_Login(String username);
 
-    UserConnector findFirstById(long id);
+    User findFirstById(long id);
 
     List<Role> findAllByRoles(String usename);
 }

@@ -1,6 +1,6 @@
 body
 {
-    background-color: #373535;
+    background-color: rgba(99,99,99,1);
     color: white;
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
@@ -9,7 +9,13 @@ body
 
 #header
 {
-    background-color: darkred;
+    background-color: rgba(64,0,0,1);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footerDiv {
+    background-color: rgba(64,0,0,1);
     margin-left: auto;
     margin-right: auto;
 }
@@ -38,19 +44,32 @@ body
     width: 1000px;
     margin-right: auto;
     margin-left: auto;
-    border: black 1px solid;
+    background-color: #444444;
+    border-left: black 1px solid;
+    border-right: black 1px solid;
 }
 
 #navbar-left
 {
     float: left;
     padding: 4px 10px;
-    background-color: rgba(33,31,62,0.34);
+    width: 179px;
+    background-color: #555555;
+    border-right: black 1px solid;
+}
+
+.top-bar {
+    float: left;
+    width: 100%;
+    background-color: #555555;
+    border-bottom: black 1px solid;
 }
 
 #content
 {
     float: left;
+    width: 800px;
+    height: max-content;
 }
 
 ul
@@ -89,6 +108,16 @@ ul a
 }
 
 .navLink {
+    color: white;
+    text-decoration: none;
+}
+
+.subjectDes {
+    width: 500px;
+}
+
+.msgList {
+    font-size: 10px;
     color: white;
     text-decoration: none;
 }

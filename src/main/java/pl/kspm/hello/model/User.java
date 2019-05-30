@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class UserConnector {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class UserConnector {
     @JoinColumn(name = "accountId")
     private Account account;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
     @OneToMany(mappedBy = "author")
@@ -31,21 +31,22 @@ public class UserConnector {
     @OneToMany(mappedBy = "addressee")
     private List<Message> recivedMsg;
 
-    public UserConnector() {
+    public User() {
     }
 
-    public UserConnector(UserConnector userConnector) {
-        this.id = userConnector.getId();
-        this.account = userConnector.getAccount();
-        this.address = userConnector.getAddress();
-        this.employee = userConnector.getEmployee();
+    public User(User user) {
+        this.id = user.getId();
+        this.account = user.getAccount();
+        this.address = user.getAddress();
+        this.employee = user.getEmployee();
+        this.roles = user.getRoles();
     }
 
     public long getId() {
         return id;
     }
 
-    public UserConnector setId(long id) {
+    public User setId(long id) {
         this.id = id;
         return this;
     }
@@ -54,7 +55,7 @@ public class UserConnector {
         return employee;
     }
 
-    public UserConnector setEmployee(Employee employee) {
+    public User setEmployee(Employee employee) {
         this.employee = employee;
         return this;
     }
@@ -63,7 +64,7 @@ public class UserConnector {
         return address;
     }
 
-    public UserConnector setAddress(Address address) {
+    public User setAddress(Address address) {
         this.address = address;
         return this;
     }
@@ -72,7 +73,7 @@ public class UserConnector {
         return account;
     }
 
-    public UserConnector setAccount(Account account) {
+    public User setAccount(Account account) {
         this.account = account;
         return this;
     }
@@ -81,12 +82,12 @@ public class UserConnector {
         return this.roles;
     }
 
-    public UserConnector setRoles(List<Role> roles) {
+    public User setRoles(List<Role> roles) {
         this.roles = roles;
         return this;
     }
 
-    public UserConnector addRole (Role role) {
+    public User addRole (Role role) {
         this.roles.add(role);
         return this;
     }
