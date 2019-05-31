@@ -1,0 +1,6 @@
+<div id="addFoto" th:fragment="addFoto">
+    <form th:action="@{'/machines/addFoto/'+${machine.id}}" th:object="${addFoto}" method="post" enctype="multipart/form-data">
+        <input type="file" name="foto">
+        <input type="submit" value="Dodaj">
+    </form>
+</div>

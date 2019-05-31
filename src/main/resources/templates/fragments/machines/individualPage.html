@@ -1,0 +1,45 @@
+<div id="machinePage" th:fragment="machinePage">
+    <div th:if="${machine != null}">
+        <table class="machinePage">
+            <tr>
+                <td>Producent: <span th:if="${machine.producer != null}"><span th:text="${machine.producer}"></span></span></td>
+                <td>Model: <span th:if="${machine.model != null}"><span th:text="${machine.model}"></span></span></td>
+            </tr>
+            <tr>
+                <td>Kod QR:<br></td>
+                <td>Zdjęcie: <br></td>
+            </tr>
+            <tr>
+                <td><img th:src="@{'/images/machines/qr/'+ ${machine.id}+'.png'}" alt="brak kodu QR (może pojawić się z opóźnieniem)"/><br></td>
+                <td>
+                    <span th:if="${machine.foto != null}">
+                        <img th:src="@{'/images/machines/foto/'+ ${machine.foto}}" alt="brak zdjęcia" style="width: 200px; height: 200px">
+                    </span>
+                    <span th:if="${machine.foto == null}">
+                        <a th:href="@{'/machines/addFoto/'+${machine.id}}">dodaj</a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>Budynek: <span th:if="${machine.building != null}"><span th:text="${machine.building}"></span></td>
+                <td>Dodano: <span th:if="${machine.added != null}"><span th:text="${machine.added}"></span></td>
+            </tr>
+            <tr>
+                <td>Lokalizacja: <span th:if="${machine.localisation != null}"><span th:text="${machine.localisation}"></span></td>
+                <td>Dokumentacja:</td>
+            </tr>
+            <tr>
+                <td>Mapa [link]</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Serwis:</td>
+                <td>Opis:</td>
+            </tr>
+            <tr>
+                <td><span th:if="${machine.serviceNumber != null}"><span th:text="${machine.serviceNumber}"></span></td>
+                <td><span th:if="${machine.description != null}"><span th:text="${machine.description}"></span></td>
+            </tr>
+        </table>
+    </div>
+</div>

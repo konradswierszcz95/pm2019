@@ -41,10 +41,10 @@ public class MainController {
 
     @GetMapping("/ar")
     public String addRole() {
-        User user = userConnector.findFirstById(2);
+        User user = userConnector.findFirstById(1);
         user.addRole(roleInterface.findById(1));
-        user.addRole(roleInterface.findById(2));
-        user.addRole(roleInterface.findById(3));
+        //user.addRole(roleInterface.findById(2));
+        //user.addRole(roleInterface.findById(3));
 
         userConnector.save(user);
 

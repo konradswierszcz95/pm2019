@@ -12,6 +12,7 @@ import pl.kspm.hello.tools.MsgObject;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class MessageService {
@@ -30,7 +31,12 @@ public class MessageService {
                 .setContent(msgObject.getContent())
                 .setCreated(new Timestamp(new Date().getTime()));
 
-        this.messageRepository.save(m);
+        Optional<User> optionalUser = userConnectorRepository.findByEmployee_Login(msgObject.getAddressee());
+        if (optionalUser.isPresent()) {
+            this.messageRepository.save(m);
+        } else {
+            System.out.println("Jebać");
+        }
 
         return 0;
     }

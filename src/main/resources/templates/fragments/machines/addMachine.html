@@ -1,0 +1,31 @@
+<div id="addMachine" th:fragment="addMachine">
+    <form th:action="@{/machines/add}" th:object="${addMachine}" method="post">
+        <table id="addMaschine">
+            <tr>
+                <td>Producent:</td>
+                <td><input type="text" id="producer" name="producer" autofocus="autofocus"> </td>
+            </tr>
+            <tr>
+                <td>Model:</td>
+                <td><input type="text" id="model" name="model"> </td>
+            </tr>
+            <tr>
+                <td>Serwis:</td>
+                <td><input type="text" id="service" name="service"> </td>
+            </tr>
+            <tr>
+                <td>Budynek:</td>
+                <td><input type="text" id="building" name="building"> </td>
+            </tr>
+            <tr>
+                <td>Lokalizacja:</td>
+                <td><input type="text" id="localisation" name="localisation"> </td>
+            </tr>
+            <tr>
+                <td>Opis:</td>
+                <td><textarea class="machineDescription" name="description" rows="12" th:value="${machineDescription}"></textarea></td>
+            </tr>
+        </table>
+        <input type="submit" value="Dodaj">
+    </form>
+</div>

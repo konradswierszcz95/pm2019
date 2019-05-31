@@ -50,7 +50,7 @@ public class MessageController {
 
         messageService.sendMsg(msgObject);
 
-        return "sendMessage";
+        return "redirect:/sendMessage/sended";
     }
 
     @GetMapping("/sendMessage/sended")

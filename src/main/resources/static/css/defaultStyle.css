@@ -56,6 +56,7 @@ body
     width: 179px;
     background-color: #555555;
     border-right: black 1px solid;
+    height: 75vh;
 }
 
 .top-bar {
