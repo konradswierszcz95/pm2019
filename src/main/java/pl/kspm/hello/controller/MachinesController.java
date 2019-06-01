@@ -2,14 +2,20 @@ package pl.kspm.hello.controller;
 
 import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pl.kspm.hello.form.AddDocument;
 import pl.kspm.hello.form.AddMachine;
 import pl.kspm.hello.model.Machine;
 import pl.kspm.hello.service.MachineService;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 @Controller
@@ -48,6 +54,7 @@ public class MachinesController {
     public String machineIndividualPage(@PathVariable("id") long id, Model model) {
         model.addAttribute("machine",this.machineService.getMachineById(id));
         model.addAttribute("case","machine");
+        model.addAttribute("documents",this.machineService.getAllDocumentForMachine(id));
         return "machines";
     }
 
@@ -73,8 +80,39 @@ public class MachinesController {
     }
 
     @PostMapping("/machines/addDocuments/{id}")
-    public String documentAddPost(@PathVariable("id") long id, Model model, @RequestParam("document") MultipartFile[] file) {
-        String filename="";
+    public String documentAddPost(@PathVariable("id") long id, Model model, @ModelAttribute("addDocument") AddDocument addDocument) throws IOException{
+        MultipartFile file = addDocument.getDocument();
+        String description = addDocument.getDescription();
+        String localisation = addDocument.getLocalisation();
+
+        this.machineService.addFile(id,file,description,localisation);
+
         return "redirect:/machines/"+id;
+    }
+
+    @GetMapping("/uploads/machines/documents/{id}/{filename}")
+    @ResponseBody
+    public void downloadDocument(@PathVariable("id") long id, @PathVariable("filename") String fileName, HttpServletResponse response) {
+        response.setHeader("Content-Disposition","attachment: filename="+fileName);
+        response.setHeader("Content-Transfer-Encoding","binary");
+
+        try {
+            BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+            FileInputStream fis = new FileInputStream(this.machineService.getFilePath(id,fileName));
+
+            int len;
+            byte[] buf = new byte[1024];
+            while((len=fis.read(buf))>0) {
+                bos.write(buf,0,len);
+            }
+            bos.close();
+            response.flushBuffer();
+        } catch (Exception ex) {
+
+        }
+
+
+        //return new FileSystemResource(new File(this.machineService.getFilePath(id,fileName)));
+
     }
 }

@@ -4,7 +4,9 @@ import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pl.kspm.hello.model.Document;
 import pl.kspm.hello.model.Machine;
+import pl.kspm.hello.repository.DocumentRepository;
 import pl.kspm.hello.repository.MachineRepository;
 import pl.kspm.hello.tools.FindExtension;
 import pl.kspm.hello.tools.QRcodeGenerator;
@@ -21,6 +23,8 @@ public class MachineService {
 
     @Autowired
     MachineRepository machineRepository;
+    @Autowired
+    DocumentRepository documentRepository;
 
     public void addMachine(Machine machine) throws IOException, WriterException {
         Timestamp ts = new Timestamp(new Date().getTime());
@@ -54,4 +58,41 @@ public class MachineService {
 
         Files.write(Paths.get(path + fileName),file.getBytes());
     }
+
+    public void addFile(long id, MultipartFile file,String description,String localisation) throws IOException{
+        String path = new File("").getAbsolutePath()+File.separator+"uploads"+File.separator+"machines"+
+                File.separator+"documents"+File.separator+id+File.separator;
+
+        String fileName = file.getOriginalFilename();
+
+        Document document = new Document();
+        document.setMachineDocument(this.getMachineById(id))
+                .setFileName(file.getOriginalFilename())
+                .setDescription(description)
+                .setPaperCopyLocalisation("Kopaia papierowa: "+localisation);
+
+
+        this.documentRepository.save(document);
+
+        File isDir = new File(path);
+        if(!isDir.exists()) {
+            try {
+                isDir.mkdirs();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        Files.write(Paths.get(path + fileName),file.getBytes());
+    }
+
+    public Iterable<Document> getAllDocumentForMachine(long machineId) {
+        Iterable<Document> documents = this.documentRepository.findAllByMachineDocumentId(machineId);
+        return documents;
+    }
+
+    public String getFilePath(long id, String fileName) {
+        return new File("").getAbsolutePath()+File.separator+"uploads"+File.separator+"machines"+
+                File.separator+"documents"+File.separator+id+File.separator+fileName;
+    }
+
 }

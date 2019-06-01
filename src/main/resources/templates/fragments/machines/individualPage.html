@@ -30,7 +30,13 @@
             </tr>
             <tr>
                 <td>Mapa [link]</td>
-                <td></td>
+                <td>
+                    <span th:if="${not #lists.isEmpty(documents)}">
+                        <span th:each="documents : ${documents}">
+                            <a th:href="@{'/uploads/machines/documents/'+${documents.machineDocument.id}+'/'+${documents.fileName}}" th:title="${documents.paperCopyLocalisation}"> <span th:text="${documents.description}"></span></a><br>
+                        </span>
+                    </span>
+                </td>
             </tr>
             <tr>
                 <td>Serwis:</td>

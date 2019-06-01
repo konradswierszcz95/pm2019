@@ -1,6 +1,8 @@
 <div id="addDocuments" th:fragment="addDocuments">
-    <form th:action="@{'/machines/addDocuments/'+${machine.id}}" th:object="${addDocuments}" method="post" enctype="multipart/form-data">
-        <input type="file" name="document" multiple>
+    <form th:action="@{'/machines/addDocuments/'+${machine.id}}" th:object="${addDocument}" method="post" enctype="multipart/form-data">
+        <input type="file" name="document"> <br>
+        Podpis linka:<input type="text" name="description"> <br>
+        Lokalizacja kopiii fizycznej:<input type="text" name="localisation">
         <input type="submit" value="Dodaj">
     </form>
 </div>

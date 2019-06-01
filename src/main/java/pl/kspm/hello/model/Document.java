@@ -27,31 +27,35 @@ public class Document {
         return machineDocument;
     }
 
-    public void setMachineDocument(Machine machineDocument) {
+    public Document setMachineDocument(Machine machineDocument) {
         this.machineDocument = machineDocument;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Document setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public String getFileName() {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
+    public Document setFileName(String fileName) {
         this.fileName = fileName;
+        return this;
     }
 
     public String getPaperCopyLocalisation() {
         return paperCopyLocalisation;
     }
 
-    public void setPaperCopyLocalisation(String paperCopyLocalisation) {
+    public Document setPaperCopyLocalisation(String paperCopyLocalisation) {
         this.paperCopyLocalisation = paperCopyLocalisation;
+        return this;
     }
 }
