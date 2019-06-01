@@ -41,10 +41,7 @@ public class MachineService {
     }
 
     public void addFoto(long id, MultipartFile file) throws IOException{
-
-        String path = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+
-                File.separator+"resources"+File.separator+"static"+File.separator+"images"+File.separator+"machines"
-                +File.separator+"foto"+File.separator;
+        String path = new File("").getAbsolutePath()+File.separator+"uploads"+File.separator+"machines"+File.separator+"foto"+File.separator;
 
         String fileName = id+ FindExtension.of(file.getOriginalFilename());
 

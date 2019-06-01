@@ -69,4 +69,17 @@ public class MachinesController {
 
         return "redirect:/machines/"+id;
     }
+
+    @GetMapping("/machines/addDocuments/{id}")
+    public String addDocuments (@PathVariable("id") long id, Model model) {
+        model.addAttribute("machine",this.machineService.getMachineById(id));
+        model.addAttribute("case","addDocuments");
+        return "machines";
+    }
+
+    @PostMapping("/machines/addDocuments/{id}")
+    public String documentAddPost(@PathVariable("id") long id, Model model, @RequestParam("document") MultipartFile file) {
+
+        return "redirect:/machines/"+id;
+    }
 }

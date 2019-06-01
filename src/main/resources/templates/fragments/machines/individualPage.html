@@ -10,10 +10,10 @@
                 <td>Zdjęcie: <br></td>
             </tr>
             <tr>
-                <td><img th:src="@{'/images/machines/qr/'+ ${machine.id}+'.png'}" alt="brak kodu QR (może pojawić się z opóźnieniem)"/><br></td>
+                <td><img th:src="@{'/uploads/machines/qr/'+ ${machine.id}+'.png'}" alt="brak kodu QR (może pojawić się z opóźnieniem)"/><br></td>
                 <td>
                     <span th:if="${machine.foto != null}">
-                        <img th:src="@{'/images/machines/foto/'+ ${machine.foto}}" alt="brak zdjęcia" style="width: 200px; height: 200px">
+                        <img th:src="@{'/uploads/machines/foto/'+ ${machine.foto}}" alt="brak zdjęcia" style="max-width: 200px; max-height: 200px">
                     </span>
                     <span th:if="${machine.foto == null}">
                         <a th:href="@{'/machines/addFoto/'+${machine.id}}">dodaj</a>
@@ -26,7 +26,7 @@
             </tr>
             <tr>
                 <td>Lokalizacja: <span th:if="${machine.localisation != null}"><span th:text="${machine.localisation}"></span></td>
-                <td>Dokumentacja:</td>
+                <td>Dokumentacja <a th:href="@{'/machines/addDocuments/'+${machine.id}}">[+]</a>:</td>
             </tr>
             <tr>
                 <td>Mapa [link]</td>

@@ -1,10 +1,8 @@
 package pl.kspm.hello.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 public class Machine {
@@ -18,11 +16,13 @@ public class Machine {
     private String serviceNumber;
     private String building;
     private String localisation;
-    private String documentation;
     private String description;
     private String code;
     private Timestamp added;
     private String foto;
+
+    @OneToMany(mappedBy = "machineDocument")
+    private List<Document> documents;
 
     public long getId() {
         return id;
@@ -78,15 +78,6 @@ public class Machine {
         return this;
     }
 
-    public String getDocumentation() {
-        return documentation;
-    }
-
-    public Machine setDocumentation(String documentation) {
-        this.documentation = documentation;
-        return this;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -120,5 +111,13 @@ public class Machine {
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+
+    public List<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<Document> documents) {
+        this.documents = documents;
     }
 }

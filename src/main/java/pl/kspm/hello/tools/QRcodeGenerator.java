@@ -19,9 +19,7 @@ public class QRcodeGenerator {
         String absoultePath = new File("").getAbsolutePath();
 
 
-        Path path = FileSystems.getDefault().getPath(absoultePath+File.separator+"src"+File.separator+"main"+
-                File.separator+"resources"+File.separator+"static"+File.separator+"images"+File.separator+"machines"
-                +File.separator+"qr"+File.separator+machineId+".png");
+        Path path = FileSystems.getDefault().getPath(absoultePath+File.separator+"uploads"+File.separator+"machines"+File.separator+"qr"+File.separator+machineId+".png");
 
 
         MatrixToImageWriter.writeToPath(bitMatrix,"PNG",path);

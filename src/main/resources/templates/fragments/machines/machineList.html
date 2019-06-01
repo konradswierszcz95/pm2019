@@ -14,7 +14,7 @@
                 <td th:text="${machineList.model}" class="msgList"></td>
                 <td th:text="${machineList.serviceNumber}" class="msgList"></td>
                 <td th:text="${machineList.building+'/'+machineList.localisation}" class="msgList"></td>
-                <td th:text="${machineList.documentation}" class="msgList"></td>
+                <!--<td th:text="${machineList.documentation}" class="msgList"></td>-->
                 <td><a th:href="@{'/machines/'+${machineList.id}}"><-</a></td>
             </tr>
         </table>
