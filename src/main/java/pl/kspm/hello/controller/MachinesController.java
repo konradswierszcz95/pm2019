@@ -1,7 +1,6 @@
 package pl.kspm.hello.controller;
 
 import com.google.zxing.WriterException;
-import javafx.scene.shape.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,12 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.kspm.hello.form.AddMachine;
 import pl.kspm.hello.model.Machine;
 import pl.kspm.hello.service.MachineService;
-import pl.kspm.hello.tools.FindExtension;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 @Controller
 public class MachinesController {
@@ -78,8 +73,8 @@ public class MachinesController {
     }
 
     @PostMapping("/machines/addDocuments/{id}")
-    public String documentAddPost(@PathVariable("id") long id, Model model, @RequestParam("document") MultipartFile file) {
-
+    public String documentAddPost(@PathVariable("id") long id, Model model, @RequestParam("document") MultipartFile[] file) {
+        String filename="";
         return "redirect:/machines/"+id;
     }
 }
