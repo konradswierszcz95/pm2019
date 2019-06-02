@@ -55,6 +55,7 @@ public class MachinesController {
         model.addAttribute("machine",this.machineService.getMachineById(id));
         model.addAttribute("case","machine");
         model.addAttribute("documents",this.machineService.getAllDocumentForMachine(id));
+
         return "machines";
     }
 

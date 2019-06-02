@@ -9,6 +9,7 @@ import pl.kspm.hello.model.Machine;
 import pl.kspm.hello.repository.DocumentRepository;
 import pl.kspm.hello.repository.MachineRepository;
 import pl.kspm.hello.tools.FindExtension;
+import pl.kspm.hello.tools.Pathes;
 import pl.kspm.hello.tools.QRcodeGenerator;
 
 import java.io.File;
@@ -28,11 +29,10 @@ public class MachineService {
 
     public void addMachine(Machine machine) throws IOException, WriterException {
         Timestamp ts = new Timestamp(new Date().getTime());
-        machine.setAdded(ts)
-            .setCode("["+machine.getId()+"] - "+ts.toString()+machine.getProducer()+machine.getModel());
+        machine.setAdded(ts);
         this.machineRepository.save(machine);
-
-        QRcodeGenerator.generateQRCode(machine.getCode(),machine.getId());
+        machine.setCode(Pathes.appHost + "machines/"+machine.getId());
+        QRcodeGenerator.generateQRCode(machine.getId());
     }
 
     public Iterable<Machine> getAllMachines() {
@@ -93,6 +93,10 @@ public class MachineService {
     public String getFilePath(long id, String fileName) {
         return new File("").getAbsolutePath()+File.separator+"uploads"+File.separator+"machines"+
                 File.separator+"documents"+File.separator+id+File.separator+fileName;
+    }
+
+    public void regenereteQr(long id) throws IOException,WriterException{
+        QRcodeGenerator.generateQRCode(id);
     }
 
 }

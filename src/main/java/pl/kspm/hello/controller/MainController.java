@@ -1,12 +1,20 @@
 package pl.kspm.hello.controller;
 
+import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import pl.kspm.hello.model.*;
+import pl.kspm.hello.repository.MachineRepository;
 import pl.kspm.hello.repository.RoleInterface;
 import pl.kspm.hello.repository.UserConnectorRepository;
+import pl.kspm.hello.tools.Pathes;
+import pl.kspm.hello.tools.QRcodeGenerator;
+
+import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -14,13 +22,17 @@ public class MainController {
     RoleInterface roleInterface;
     @Autowired
     UserConnectorRepository userConnector;
+    @Autowired
+    MachineRepository machineRepository;
 
+    @PreAuthorize("hasAnyRole('ROOT')")
     @GetMapping("/hello")
     public String home(ModelMap modelMap) {
         modelMap.put("hello","Witaj świecie");
         return "hello";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT')")
     @GetMapping("/cr")
     public String cr() {
         Role r1 = new Role();
@@ -39,6 +51,7 @@ public class MainController {
         return "hello";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT')")
     @GetMapping("/ar")
     public String addRole() {
         User user = userConnector.findFirstById(1);
@@ -48,6 +61,19 @@ public class MainController {
 
         userConnector.save(user);
 
+        return "hello";
+    }
+
+    @PreAuthorize("hasAnyRole('ROOT')")
+    @GetMapping("/new_qr")
+    public String recreateQrCode() throws IOException, WriterException {
+        List<Machine> machines = this.machineRepository.findAll();
+        for (Machine m: machines) {
+            m.setCode(Pathes.appHost + "machines/"+m.getId());
+            QRcodeGenerator.generateQRCode(m.getId());
+
+            this.machineRepository.save(m);
+        }
         return "hello";
     }
 

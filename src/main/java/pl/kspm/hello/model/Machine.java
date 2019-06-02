@@ -24,6 +24,9 @@ public class Machine {
     @OneToMany(mappedBy = "machineDocument")
     private List<Document> documents;
 
+    @OneToMany(mappedBy = "brokenMachine")
+    private List<Failure> failures;
+
     public long getId() {
         return id;
     }
@@ -119,5 +122,13 @@ public class Machine {
 
     public void setDocuments(List<Document> documents) {
         this.documents = documents;
+    }
+
+    public List<Failure> getFailures() {
+        return failures;
+    }
+
+    public void setFailures(List<Failure> failures) {
+        this.failures = failures;
     }
 }

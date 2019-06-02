@@ -1,4 +1,5 @@
 <div id="messageList" th:fragment="sendedMessageList">
+    Wysłane wiadomości:
     <div th:if="${not #lists.isEmpty(sendedMsg)}">
         <table class="sended-messages">
             <tr>

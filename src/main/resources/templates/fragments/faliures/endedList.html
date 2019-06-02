@@ -1,0 +1,29 @@
+<div id="failureList" th:fragment="failureList">
+    <div th:if="${not #lists.isEmpty(failuresList)}">
+        Awarie zgłoszone:
+        <table class="failuresList">
+            <tr>
+                <td>Maszyna</td>
+                <td>Zgłoszono</td>
+                <td>Zgłosił</td>
+                <td>Krótki opis</td>
+                <td>Przyjmij</td>
+            </tr>
+            <tr th:each="failuresList : ${failuresList}">
+                <td th:text="${failuresList.brokenMachine.id+'. '+failuresList.brokenMachine.producer+' '+failuresList.brokenMachine.model}" class="msgList"></td>
+                <td th:text="${failuresList.created}" class="msgList"></td>
+                <td th:text="${failuresList.creator.employee.name+' '+failuresList.creator.employee.surname}" class="msgList"></td>
+                <td th:text="${failuresList.shortInfo}" class="msgList"></td>
+                <td><a th:href="@{/}">[V]</a></td>
+            </tr>
+        </table>
+
+        Awarie przyjęte:
+        <table class="failuresList">
+            <tr>
+                <td>Id:</td>
+
+            </tr>
+        </table>
+    </div>
+</div>

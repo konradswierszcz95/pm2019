@@ -1,0 +1,27 @@
+<div id="failureList" th:fragment="failureList">
+    Awarie przyjęte:
+    <div th:if="${not #lists.isEmpty(failuresList)}">
+        <table class="failuresList">
+            <tr>
+                <td>Id</td>
+                <td>Maszyna</td>
+                <td>Zgłoszono</td>
+                <td>Zgłosił</td>
+                <td>Przyjęto</td>
+                <td>Przyjął</td>
+                <td>Zakończ</td>
+            </tr>
+            <tr th:each="failuresList : ${failuresList}">
+                <span th:if="${failuresList.isAccept==1 and failuresList.ended==null}">
+                    <td th:text="${failuresList.id}" class="msgList"></td>
+                    <td th:text="${failuresList.brokenMachine.id+'. '+failuresList.brokenMachine.producer+' '+failuresList.brokenMachine.model}" class="msgList"></td>
+                    <td th:text="${failuresList.created}" class="msgList"></td>
+                    <td th:text="${failuresList.creator.employee.name+' '+failuresList.creator.employee.surname}" class="msgList"></td>
+                    <td th:text="${failuresList.accepted}" class="msgList"></td>
+                    <td th:text="${failuresList.acceptor.employee.name+' '+failuresList.acceptor.employee.surname}" class="msgList"></td>
+                    <td><a th:href="@{'/failures/end/'+${failuresList.id}}">[V]</a></td>
+                </span>
+            </tr>
+        </table>
+    </div>
+</div>

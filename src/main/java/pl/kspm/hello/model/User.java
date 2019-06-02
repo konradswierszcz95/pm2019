@@ -31,6 +31,15 @@ public class User {
     @OneToMany(mappedBy = "addressee")
     private List<Message> recivedMsg;
 
+    @OneToMany(mappedBy = "creator")
+    private List<Failure> createdFailures;
+
+    @OneToMany(mappedBy = "acceptor")
+    private List<Failure> acceptedFailures;
+
+    @OneToMany(mappedBy = "ender")
+    private List<Failure> endedFailures;
+
     public User() {
     }
 
@@ -106,5 +115,29 @@ public class User {
 
     public void setRecivedMsg(List<Message> recivedMsg) {
         this.recivedMsg = recivedMsg;
+    }
+
+    public List<Failure> getCreatedFailures() {
+        return createdFailures;
+    }
+
+    public void setCreatedFailures(List<Failure> createdFailures) {
+        this.createdFailures = createdFailures;
+    }
+
+    public List<Failure> getAcceptedFailures() {
+        return acceptedFailures;
+    }
+
+    public void setAcceptedFailures(List<Failure> acceptedFailures) {
+        this.acceptedFailures = acceptedFailures;
+    }
+
+    public List<Failure> getEndedFailures() {
+        return endedFailures;
+    }
+
+    public void setEndedFailures(List<Failure> endedFailures) {
+        this.endedFailures = endedFailures;
     }
 }

@@ -1,6 +1,7 @@
 <div id="machinePage" th:fragment="machinePage">
     <div th:if="${machine != null}">
         <table class="machinePage">
+            <a th:href="@{'/failures/create/'+${machine.id}}">Zgłoś awarię</a>
             <tr>
                 <td>Producent: <span th:if="${machine.producer != null}"><span th:text="${machine.producer}"></span></span></td>
                 <td>Model: <span th:if="${machine.model != null}"><span th:text="${machine.model}"></span></span></td>

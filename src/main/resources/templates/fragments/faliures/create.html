@@ -1,0 +1,8 @@
+<div id="createFailure" th:fragment="createFailure">
+    <form th:action="@{'/failures/create/'+${machine.id}}" th:object="${createFailure}" method="post">
+        Zgłoszenie awarii maszyny <span th:text="${machine.id+'. '+machine.producer+' '+machine.model}"></span> <br>
+        Krótki opis awarii:<br>
+        <textarea class="failure-description" name="description" rows="12" th:value="${shortInfo}"></textarea> <br>
+        <input type="submit" value="Zgłoś">
+    </form>
+</div>

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Failure</title>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/defaultStyle.css}">
 </head>
@@ -11,10 +11,17 @@
     <div th:replace="fragments/header :: header"></div>
 
     <div id="workspace">
+
         <div th:replace="fragments/navigation :: navigation"></div>
 
         <div id="content">
-            <h1>Sprawdź maszynę</h1>
+            <div class="top-bar">
+                <a class="navLink" href="/machines">Zgłoś</a>
+            </div>
+
+            <span th:if="${case=='add'}"><div th:replace="fragments/faliures/create :: createFailure"></div></span>
+            <span th:if="${case=='list'}"><div th:replace="fragments/faliures/failureList :: failureList"></div></span>
+            <span th:if="${case=='accepted'}"><div th:replace="fragments/faliures/acceptedList :: failureList"></div></span>
         </div>
 
         <div style="clear:both;"></div>
