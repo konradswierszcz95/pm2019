@@ -16,12 +16,19 @@
 
         <div id="content">
             <div class="top-bar">
-                <a class="navLink" href="/machines">Zgłoś</a>
+                <a class="navLink" href="/machines"> --Zgłoś-- |</a>
+                <a class="navLink" href="/failures"> --Zgłoszone-- |</a>
+                <a class="navLink" href="/failures/accepted"> --Zaakceptowane-- |</a>
+                <a class="navLink" href="/failures/myEnded"> --Moje zakończone-- |</a>
+                <a class="navLink" href="/failures/ended"> --Wszystkie zakończone-- |</a>
             </div>
 
             <span th:if="${case=='add'}"><div th:replace="fragments/faliures/create :: createFailure"></div></span>
             <span th:if="${case=='list'}"><div th:replace="fragments/faliures/failureList :: failureList"></div></span>
             <span th:if="${case=='accepted'}"><div th:replace="fragments/faliures/acceptedList :: failureList"></div></span>
+            <span th:if="${case=='myEnded'}"><div th:replace="fragments/faliures/myEndedList :: myEndedList"></div></span>
+            <span th:if="${case=='addRaport'}"><div th:replace="fragments/faliures/addRaport :: addRaport"></div></span>
+            <span th:if="${case=='ended'}"><div th:replace="fragments/faliures/endedList :: endedFailureList"></div></span>
         </div>
 
         <div style="clear:both;"></div>

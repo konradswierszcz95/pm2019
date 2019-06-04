@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MyUserDetails extends User implements UserDetails {
 
     public MyUserDetails (User user) {

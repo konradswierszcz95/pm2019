@@ -10,7 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.kspm.hello.form.AddDocument;
 import pl.kspm.hello.form.AddMachine;
 import pl.kspm.hello.model.Machine;
+import pl.kspm.hello.service.FailureService;
 import pl.kspm.hello.service.MachineService;
+import pl.kspm.hello.tools.Downloader;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
@@ -23,6 +25,8 @@ public class MachinesController {
 
     @Autowired
     MachineService machineService;
+    @Autowired
+    FailureService failureService;
 
     @GetMapping("/machines")
     public String machineList(Model model) {
@@ -55,6 +59,7 @@ public class MachinesController {
         model.addAttribute("machine",this.machineService.getMachineById(id));
         model.addAttribute("case","machine");
         model.addAttribute("documents",this.machineService.getAllDocumentForMachine(id));
+        model.addAttribute("thisFailures",this.failureService.getAllEndedForMachine(id));
 
         return "machines";
     }
@@ -94,26 +99,6 @@ public class MachinesController {
     @GetMapping("/uploads/machines/documents/{id}/{filename}")
     @ResponseBody
     public void downloadDocument(@PathVariable("id") long id, @PathVariable("filename") String fileName, HttpServletResponse response) {
-        response.setHeader("Content-Disposition","attachment: filename="+fileName);
-        response.setHeader("Content-Transfer-Encoding","binary");
-
-        try {
-            BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
-            FileInputStream fis = new FileInputStream(this.machineService.getFilePath(id,fileName));
-
-            int len;
-            byte[] buf = new byte[1024];
-            while((len=fis.read(buf))>0) {
-                bos.write(buf,0,len);
-            }
-            bos.close();
-            response.flushBuffer();
-        } catch (Exception ex) {
-
-        }
-
-
-        //return new FileSystemResource(new File(this.machineService.getFilePath(id,fileName)));
-
+        Downloader.download(this.machineService.getFilePath(id,fileName),"name",response);
     }
 }

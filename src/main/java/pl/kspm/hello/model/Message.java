@@ -24,6 +24,8 @@ public class Message {
 
     private Timestamp created;
 
+    private String readed;
+
     public long getId() {
         return id;
     }
@@ -74,5 +76,13 @@ public class Message {
 
     public void setCreated(Timestamp created) {
         this.created = created;
+    }
+
+    public String getReaded() {
+        return readed;
+    }
+
+    public void setReaded(String readed) {
+        this.readed = readed;
     }
 }

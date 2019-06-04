@@ -9,6 +9,7 @@ import java.util.List;
 public interface MessageRepository extends CrudRepository<Message,Integer> {
 
     List<Message> findAllByAddresseeEquals(User user);
+    List<Message> findAllByAddresseeEqualsAndReadedIsNull(User user);
 
     List<Message> findAllByAuthorEquals(User user);
 

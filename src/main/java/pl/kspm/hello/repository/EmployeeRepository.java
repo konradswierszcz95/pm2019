@@ -15,5 +15,4 @@ public interface EmployeeRepository extends CrudRepository<Employee,Integer> {
     List<Employee> findAllByLoginContains(String login);
 
     boolean existsByEmail(String email);
-
 }

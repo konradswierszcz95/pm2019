@@ -18,9 +18,9 @@
 
         <div id="content">
             <div class="top-bar">
-                <a class="navLink" href="/sendMessage/send">Wyślij wiadomość</a>
-                <a class="navLink" href="/sendMessage">Otrzymane</a>
-                <a class="navLink" href="/sendMessage/sended">Wysłane</a>
+                <a class="navLink" href="/sendMessage/send"> --Wyślij wiadomość-- |</a>
+                <a class="navLink" href="/sendMessage"> --Otrzymane-- |</a>
+                <a class="navLink" href="/sendMessage/sended"> --Wysłane-- |</a>
             </div>
 
             <span th:if="${case=='sending'}"><div th:replace="fragments/messages/sendMsg :: sendMessage"></div></span>
@@ -28,6 +28,8 @@
             <span th:if="${case=='sended'}"><div th:replace="fragments/messages/sendedMsgList :: sendedMessageList"></div></span>
             <span th:if="${case=='opened'}"><div th:replace="fragments/messages/openMsg :: openMessage"></div></span>
             <span th:if="${case=='answer'}"><div th:replace="fragments/messages/answer :: answerMsg"></div></span>
+            <span th:if="${case=='ask'}"><div th:replace="fragments/messages/ask :: ask"></div></span>
+            <span th:if="${case=='sendTo'}"><div th:replace="fragments/messages/sendTo :: sendTo"></div></span>
 
         </div>
 

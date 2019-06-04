@@ -1,0 +1,5 @@
+<div id="welcome" th:fragment="welcome">
+    Witaj <span th:text="${user.employee.name}"></span>! <br>
+    Masz <span th:text="${unreaded}"></span> nieprzeczytanych wiadomości. <br>
+    Aktualnie <span th:text="${failures}"></span> awarii czeka na potwierdzenie ich przyjęcia.
+</div>

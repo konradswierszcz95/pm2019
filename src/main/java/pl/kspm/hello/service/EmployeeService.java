@@ -1,7 +1,10 @@
 package pl.kspm.hello.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.kspm.hello.config.UserContext;
 import pl.kspm.hello.model.*;
 import pl.kspm.hello.repository.AddressRepository;
 import pl.kspm.hello.repository.EmployeeRepository;
@@ -21,6 +24,8 @@ public class EmployeeService {
     private AddressRepository addressRepository;
     @Autowired
     private UserConnectorRepository userConnectorRepository;
+
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public String errorMessage (int errorCode) {
         //Informacje zwrotne po próbie dodania pracownika
@@ -77,17 +82,13 @@ public class EmployeeService {
         e.setLogin(login);
         //===========================================================
 
-        //Generowanie losowej soli
-        SaltGenerator saltGenerator = new SaltGenerator();
-        String salt = saltGenerator.getSalt();
-        e.setSalt(salt);
-        //===========================================================
-
         //Generowanie jednorazowego tokena do pierwszego logowania
         TokenGenerator tokenGenerator = new TokenGenerator();
         String token = tokenGenerator.generateToken();
-        e.setPassword(token);
+        e.setPassword(passwordEncoder.encode(token));
         //===========================================================
+
+        e.setPhone(userObject.getPhone());
 
         //Formułowanie treści e-maila rejestracyjnego
         String content = "Witaj "+userObject.getFirstName()+" "+userObject.getLastName();
@@ -121,12 +122,16 @@ public class EmployeeService {
         //====================================================================
     }
 
-    public Iterable<Employee> getAllEmployees() {
-        Iterable<Employee> employees =  this.employeeRepository.findAll();
-        return employees;
+    public Iterable<User> getAllEmployees() {
+        Iterable<User> users =  this.userConnectorRepository.findAll();
+        return users;
     }
 
     public void sendEmail(String email, String content, String token) {
         ess.sendEmail(email,"Praca Magisterska - konto zostało utworzone",content);
+    }
+
+    public User getUserById(long id) {
+        return this.userConnectorRepository.findFirstById(id);
     }
 }

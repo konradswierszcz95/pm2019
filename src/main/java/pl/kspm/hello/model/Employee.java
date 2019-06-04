@@ -17,7 +17,7 @@ public class Employee {
 
     private String login;
 
-    private String salt;
+    private String phone;
 
     private String password;
 
@@ -28,7 +28,7 @@ public class Employee {
         this.login = employee.getLogin();
         this.password = employee.getPassword();
         this.id = employee.getId();
-        this.salt = employee.getSalt();
+        this.phone = employee.getPhone();
         this.email = employee.getEmail();
     }
 
@@ -43,12 +43,12 @@ public class Employee {
         return this;
     }
 
-    public String getSalt() {
-        return salt;
+    public String getPhone() {
+        return phone;
     }
 
-    public Employee setSalt(String salt) {
-        this.salt = salt;
+    public Employee setPhone(String phone) {
+        this.phone = phone;
         return this;
     }
 

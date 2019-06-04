@@ -10,6 +10,7 @@ import pl.kspm.hello.model.*;
 import pl.kspm.hello.repository.MachineRepository;
 import pl.kspm.hello.repository.RoleInterface;
 import pl.kspm.hello.repository.UserConnectorRepository;
+import pl.kspm.hello.service.FailureService;
 import pl.kspm.hello.tools.Pathes;
 import pl.kspm.hello.tools.QRcodeGenerator;
 
@@ -24,6 +25,8 @@ public class MainController {
     UserConnectorRepository userConnector;
     @Autowired
     MachineRepository machineRepository;
+    @Autowired
+    FailureService failureService;
 
     @PreAuthorize("hasAnyRole('ROOT')")
     @GetMapping("/hello")
@@ -38,16 +41,16 @@ public class MainController {
         Role r1 = new Role();
         r1.setRolename("ROOT");
 
-        Role r2 = new Role();
+        /*Role r2 = new Role();
         r2.setRolename("ADMIN");
 
         Role r3 = new Role();
-        r3.setRolename("USER");
+        r3.setRolename("USER");*/
 
         this.roleInterface.save(r1);
-        this.roleInterface.save(r2);
+        /*this.roleInterface.save(r2);
         this.roleInterface.save(r3);
-
+*/
         return "hello";
     }
 
@@ -76,5 +79,4 @@ public class MainController {
         }
         return "hello";
     }
-
 }

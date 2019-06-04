@@ -1,0 +1,26 @@
+<div id="userList" th:fragment="users">
+    <div th:if="${not #lists.isEmpty(userList)}">
+        <table class="userList">
+            <tr>
+                <td>Imię</td>
+                <td>Nazwisko</td>
+                <td>Telefon służbowy</td>
+                <td>Adres do wiadomości</td>
+            </tr>
+            <tr th:each="userList : ${userList}">
+                <td th:text="${userList.employee.name}" class="msgList"></td>
+                <td th:text="${userList.employee.surname}" class="msgList"></td>
+                <td>
+                    <span th:if="${userList.employee.phone != null}">
+                        <span th:text="${userList.employee.phone}" class="msgList"></span>
+                    </span>
+                </td>
+                <td>
+                    <a th:href="@{'/sendMessage/sendTo/'+${userList.employee.id}}">
+                        <span th:text="${userList.employee.login}" class="msgList"></span>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

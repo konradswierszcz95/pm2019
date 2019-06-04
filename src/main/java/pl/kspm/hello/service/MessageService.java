@@ -68,4 +68,13 @@ public class MessageService {
 
 
     }
+
+    public void save(Message message) {
+        this.messageRepository.save(message);
+    }
+
+    public int numberOfUnreadeMessages(User u) {
+        int number=this.messageRepository.findAllByAddresseeEqualsAndReadedIsNull(u).size();
+         return number;
+    }
 }

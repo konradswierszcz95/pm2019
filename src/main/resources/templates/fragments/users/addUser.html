@@ -1,0 +1,39 @@
+<div id="addUser" th:fragment="addUser">
+    <form th:action="@{/employees/addEmployee}" th:object="${addEmployeeForm}" method="post">
+        <label for="employeeName">Imię:</label>
+        <input type="text" id="employeeName" name="employeeName" autofocus="autofocus"/><br>
+
+        <label for="employeeSurname">Nazwisko:</label>
+        <input type="text" id="employeeSurname" name="employeeSurname"/><br>
+
+        <label for="employeePhone">Telefon służbowy:</label>
+        <input type="text" id="employeePhone" name="employeePhone"/><br>
+
+        <label for="employeeEmail">E-mail:</label>
+        <input type="text" id="employeeEmail" name="employeeEmail"/><br>
+
+        <label for="employeeLocality">Miejscowość:</label>
+        <input type="text" id="employeeLocality" name="employeeLocality"/><br>
+
+        <label for="employeeStreet">Ulica:</label>
+        <input type="text" id="employeeStreet" name="employeeStreet"/><br>
+
+        <label for="employeeZipCode">Kod pocztowy:</label>
+        <input type="text" id="employeeZipCode" name="employeeZipCode"/><br>
+
+        <label for="employeePostLocality">Poczta:</label>
+        <input type="text" id="employeePostLocality" name="employeePostLocality"/><br>
+
+        <label for="employeeHouseNumber">Numer domu:</label>
+        <input type="text" id="employeeHouseNumber" name="employeeHouseNumber"/><br>
+
+        <label for="employeeCountry">Państwo:</label>
+        <input type="text" id="employeeCountry" name="employeeCountry"/><br>
+
+        <input type="submit" value="Dodaj pracownika"/>
+    </form>
+
+    <div id="backMassageDiv">
+        <normal th:text="${errorMessage}"/>
+    </div>
+</div>

@@ -48,5 +48,25 @@
                 <td><span th:if="${machine.description != null}"><span th:text="${machine.description}"></span></td>
             </tr>
         </table>
+
+        <span th:if="${thisFailures != null}">
+            ============================================================================
+            <table class="this-machine-failures">
+                <tr>
+                    <td>Id</td>
+                    <td>Naprawił</td>
+                    <td>Naprawiono</td>
+                    <td>Krótki opis</td>
+                    <td>Raport</td>
+                </tr>
+                <tr th:each="thisFailures : ${thisFailures}">
+                    <td th:text="${thisFailures.id}"></td>
+                    <td th:text="${thisFailures.ender.employee.name+' '+thisFailures.ender.employee.surname}"></td>
+                    <td th:text="${thisFailures.ended}"></td>
+                    <td th:text="${thisFailures.shortInfo}"></td>
+                    <td><a th:href="@{'/uploads/failures/raports/' + ${thisFailures.raport}}">Pobierz</a></td>
+                </tr>
+            </table>
+        </span>
     </div>
 </div>

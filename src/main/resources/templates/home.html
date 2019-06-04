@@ -14,7 +14,13 @@
         <div th:replace="fragments/navigation :: navigation"></div>
 
         <div id="content">
-            <h1>Strona domowa</h1>
+            <div class="top-bar">
+                <a class="navLink" href="/"> --Strona powitalna-- |</a>
+                <a class="navLink" href="/home/pass"> --Zmień hasło-- |</a>
+            </div>
+
+            <span th:if="${case=='welcome'}"><div th:replace="fragments/home/welcome :: welcome"></div></span>
+            <span th:if="${case=='pass'}"><div th:replace="fragments/home/pass :: pass"></div></span>
         </div>
 
         <div style="clear:both;"></div>

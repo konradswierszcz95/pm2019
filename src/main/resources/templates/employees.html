@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Add</title>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/defaultStyle.css}">
 </head>
@@ -14,8 +14,17 @@
 
         <div th:replace="fragments/navigation :: navigation"></div>
 
+
         <div id="content">
-            <h1>Moje konto</h1>
+            <div class="top-bar">
+                <a class="navLink" href="/employees"> --Lista-- |</a>
+                <a class="navLink" href="/employees/addEmployee"> --Dodaj-- |</a>
+            </div>
+
+
+            <span th:if="${case=='addUser'}"><div th:replace="fragments/users/addUser :: addUser"></div></span>
+            <span th:if="${case=='list'}"><div th:replace="fragments/users/users :: users"></div></span>
+
         </div>
 
         <div style="clear:both;"></div>

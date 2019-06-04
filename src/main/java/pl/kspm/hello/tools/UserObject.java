@@ -14,7 +14,8 @@ public class UserObject {
     private String postLocality;
     private String houseNumber;
 
-    private String role;
+    private String phone;
+
 
     public String getFirstName() {
         return firstName;
@@ -97,12 +98,12 @@ public class UserObject {
         return this;
     }
 
-    public String getRole() {
-        return role;
+    public String getPhone() {
+        return phone;
     }
 
-    public UserObject setRole(String role) {
-        this.role = role;
+    public UserObject setPhone(String phone) {
+        this.phone = phone;
         return this;
     }
 }

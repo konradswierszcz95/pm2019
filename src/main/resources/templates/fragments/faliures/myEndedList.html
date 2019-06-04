@@ -1,9 +1,10 @@
 <div id="myEndedList" th:fragment="myEndedList">
     <div th:if="${not #lists.isEmpty(failuresList)}">
-        <a href>Wzór raportu</a>
+        <a th:href="@{/uploads/failures/raports/raportWzor.docx}">Wzór raportu</a><br>
         Moje naprawione awarie:
         <table class="failuresList">
             <tr>
+                <td>Id</td>
                 <td>Maszyna</td>
                 <td>Zakończono naprawę</td>
                 <td>Naprawił</td>
@@ -11,19 +12,19 @@
                 <td>Raport</td>
             </tr>
             <tr th:each="failuresList : ${failuresList}">
-                <td th:text="${failuresList.brokenMachine.id+'. '+failuresList.brokenMachine.producer+' '+failuresList.brokenMachine.model}" class="msgList"></td>
+                <td th:text="${failuresList.id}" class="msgList"></td>
+                <td><a th:href="@{'/machines/'+${failuresList.brokenMachine.id}}" ><span th:text="${failuresList.brokenMachine.id+'. '+failuresList.brokenMachine.producer+' '+failuresList.brokenMachine.model}" class="msgList"></span></a></td>
                 <td th:text="${failuresList.created}" class="msgList"></td>
                 <td th:text="${failuresList.creator.employee.name+' '+failuresList.creator.employee.surname}" class="msgList"></td>
                 <td th:text="${failuresList.shortInfo}" class="msgList"></td>
-                <td><a th:href="@{/}">[V]</a></td>
-            </tr>
-        </table>
-
-        Awarie przyjęte:
-        <table class="failuresList">
-            <tr>
-                <td>Id:</td>
-
+                <td>
+                    <span th:if="${failuresList.raport==null}">
+                        <a th:href="@{'/failures/addRaport/' + ${failuresList.id}}">[+]</a>
+                    </span>
+                    <span th:if="${failuresList.raport!=null}">
+                        <a th:href="@{'/uploads/failures/raports/' + ${failuresList.raport}}">Pobierz</a>
+                    </span>
+                </td>
             </tr>
         </table>
     </div>

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.kspm.hello.form.AddEmployeeForm;
+import pl.kspm.hello.repository.UserConnectorRepository;
 import pl.kspm.hello.service.EmployeeService;
 import pl.kspm.hello.tools.UserObject;
 
@@ -17,21 +18,23 @@ public class EmployeeControler {
     @Autowired
     EmployeeService employeeService;
 
-    @RequestMapping(value = "/employees", method = RequestMethod.GET)
-    @ResponseBody
-    public Collection getAllEmployees() {
-        return (Collection)this.employeeService.getAllEmployees();
+    @GetMapping("/employees")
+    public String getAllEmployees(Model model) {
+        model.addAttribute("case","list");
+        model.addAttribute("userList",this.employeeService.getAllEmployees());
+        return "employees";
     }
 
 
     @PreAuthorize("hasAnyRole('ROOT')")
-    @RequestMapping(value = "addEmployee", method = RequestMethod.GET)
-    public String getAddEmployeeForm() {
-        return "addEmployee";
+    @RequestMapping(value = "/employees/addEmployee", method = RequestMethod.GET)
+    public String getAddEmployeeForm(Model model) {
+        model.addAttribute("case","addUser");
+        return "employees";
     }
 
-   @PreAuthorize("hasAnyRole('ROOT')")
-    @RequestMapping(value = "addEmployee", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('ROOT')")
+    @RequestMapping(value = "/employees/addEmployee", method = RequestMethod.POST)
     public String addEmployee(@ModelAttribute(name = "addEmployeeForm")AddEmployeeForm addEmployeeForm, Model model) {
         UserObject userObject = new UserObject();
         userObject.setFirstName(addEmployeeForm.getEmployeeName())
@@ -42,11 +45,12 @@ public class EmployeeControler {
                 .setZipCode(addEmployeeForm.getEmployeeZipCode())
                 .setPostLocality(addEmployeeForm.getEmployeePostLocality())
                 .setHouseNumber(addEmployeeForm.getEmployeeHouseNumber())
-                .setCountry(addEmployeeForm.getEmployeeCountry());
+                .setCountry(addEmployeeForm.getEmployeeCountry())
+                .setPhone(addEmployeeForm.getEmployeePhone());
 
         int errorCode = employeeService.addNewEmployee(userObject);
 
         model.addAttribute("errorMessage",employeeService.errorMessage(errorCode));
-        return "addEmployee";
+        return "redirect:/employees";
     }
 }

@@ -1,5 +1,5 @@
 <div id="addFoto" th:fragment="addFoto">
-    Dodaj fotografię maszyny <span th:text="${machine.producer}+' '+${machine.model}"></span>
+    Dodaj fotografię maszyny <span th:text="${machine.producer}+' '+${machine.model}"></span>. Akceptowany jest wyłącznie format PNG
     <form th:action="@{'/machines/addFoto/'+${machine.id}}" th:object="${addFoto}" method="post" enctype="multipart/form-data">
         <input type="file" name="foto">
         <input type="submit" value="Dodaj">

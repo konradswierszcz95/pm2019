@@ -10,6 +10,7 @@ public class AddEmployeeForm {
     private String employeePostLocality;
     private String employeeHouseNumber;
     private String employeeCountry;
+    private String employeePhone;
 
     public AddEmployeeForm() {
         super();
@@ -85,5 +86,13 @@ public class AddEmployeeForm {
 
     public void setEmployeeCountry(String employeeCountry) {
         this.employeeCountry = employeeCountry;
+    }
+
+    public String getEmployeePhone() {
+        return employeePhone;
+    }
+
+    public void setEmployeePhone(String employeePhone) {
+        this.employeePhone = employeePhone;
     }
 }

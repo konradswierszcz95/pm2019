@@ -2,9 +2,9 @@ package pl.kspm.hello.tools;
 
 public class StringCheck {
 
-    private String specialSigns = "!@#$%^&*()_-+={[]}:;|<,.>/?";
+    private static String specialSigns = "!@#$%^&*()_-+={[]}:;|<,.>/?";
 
-    public boolean containsSpecialSign(String text) {
+    public static boolean containsSpecialSign(String text) {
         boolean contains = false;
         for (int i = 0; i < specialSigns.length(); i++) {
             if (text.contains("" + specialSigns.charAt(i))) {

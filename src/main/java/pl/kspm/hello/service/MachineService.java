@@ -8,6 +8,7 @@ import pl.kspm.hello.model.Document;
 import pl.kspm.hello.model.Machine;
 import pl.kspm.hello.repository.DocumentRepository;
 import pl.kspm.hello.repository.MachineRepository;
+import pl.kspm.hello.tools.Downloader;
 import pl.kspm.hello.tools.FindExtension;
 import pl.kspm.hello.tools.Pathes;
 import pl.kspm.hello.tools.QRcodeGenerator;
@@ -46,17 +47,16 @@ public class MachineService {
 
     public void addFoto(long id, MultipartFile file) throws IOException{
         String path = new File("").getAbsolutePath()+File.separator+"uploads"+File.separator+"machines"+File.separator+"foto"+File.separator;
-
-        String fileName = id+ FindExtension.of(file.getOriginalFilename());
+        String extension = FindExtension.of(file.getOriginalFilename()).toLowerCase();
+        String fileName = id+ extension;
 
         Machine m = this.machineRepository.findById(id);
-        if(!fileName.equals("")) {
+        if(extension.equals(".png") && !file.isEmpty()) {
             m.setFoto(fileName);
+            this.machineRepository.save(m);
+
+            Files.write(Paths.get(path + fileName),file.getBytes());
         }
-
-        this.machineRepository.save(m);
-
-        Files.write(Paths.get(path + fileName),file.getBytes());
     }
 
     public void addFile(long id, MultipartFile file,String description,String localisation) throws IOException{
@@ -65,15 +65,17 @@ public class MachineService {
 
         String fileName = file.getOriginalFilename();
 
-        Document document = new Document();
-        document.setMachineDocument(this.getMachineById(id))
-                .setFileName(file.getOriginalFilename())
-                .setDescription(description)
-                .setPaperCopyLocalisation("Kopaia papierowa: "+localisation);
+        if (!file.isEmpty()) {
+            Document document = new Document();
+            document.setMachineDocument(this.getMachineById(id))
+                    .setFileName(file.getOriginalFilename())
+                    .setDescription(description)
+                    .setPaperCopyLocalisation("Kopaia papierowa: " + localisation);
+            this.documentRepository.save(document);
+        }
 
-
-        this.documentRepository.save(document);
-
+        Downloader.upload(path,fileName,file);
+/*
         File isDir = new File(path);
         if(!isDir.exists()) {
             try {
@@ -82,7 +84,7 @@ public class MachineService {
                 ex.printStackTrace();
             }
         }
-        Files.write(Paths.get(path + fileName),file.getBytes());
+        Files.write(Paths.get(path + fileName),file.getBytes());*/
     }
 
     public Iterable<Document> getAllDocumentForMachine(long machineId) {
