@@ -24,6 +24,7 @@
 
             <span th:if="${case=='addUser'}"><div th:replace="fragments/users/addUser :: addUser"></div></span>
             <span th:if="${case=='list'}"><div th:replace="fragments/users/users :: users"></div></span>
+            <span th:if="${case=='permissions'}"><div th:replace="fragments/users/editPermissions :: permissions"></div></span>
 
         </div>
 

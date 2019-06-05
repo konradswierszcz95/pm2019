@@ -8,11 +8,14 @@ import pl.kspm.hello.config.UserContext;
 import pl.kspm.hello.model.*;
 import pl.kspm.hello.repository.AddressRepository;
 import pl.kspm.hello.repository.EmployeeRepository;
+import pl.kspm.hello.repository.RoleInterface;
 import pl.kspm.hello.repository.UserConnectorRepository;
 import pl.kspm.hello.tools.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class EmployeeService {
@@ -21,7 +24,7 @@ public class EmployeeService {
     @Autowired
     private EmailSenderService ess;
     @Autowired
-    private AddressRepository addressRepository;
+    private RoleInterface roleInterface;
     @Autowired
     private UserConnectorRepository userConnectorRepository;
 
@@ -133,5 +136,54 @@ public class EmployeeService {
 
     public User getUserById(long id) {
         return this.userConnectorRepository.findFirstById(id);
+    }
+
+    public List<Role> getRoleList() {
+        List<Role> roles = this.roleInterface.findAll();
+
+        roles.remove(0);
+
+        return roles;
+    }
+
+    public List<String> getRoleListById(long id) {
+        User user = this.userConnectorRepository.findFirstById(id);
+        List<Role> roles = user.getRoles();
+        List<String> rolenames = new ArrayList<>();
+
+        for (int i=1; i<=roles.size(); i++) {
+            rolenames.add(roles.get(i-1).getRolename());
+        }
+
+        return rolenames;
+    }
+
+    public String changeRoles(int[] rolesList, long userId, String password) {
+        if (passwordEncoder.matches(password,UserContext.getCurrentUser().getEmployee().getPassword())) {
+            User user = this.userConnectorRepository.findFirstById(userId);
+            List<Role> newRoles = new ArrayList<>();
+
+            for (int i :
+                    rolesList) {
+                newRoles.add(this.roleInterface.findById(i));
+            }
+
+            user.setRoles(newRoles);
+            this.userConnectorRepository.save(user);
+            return "Zmieniono uprawnienia";
+        } else {
+            return "Podane hasło jest nieprawidłowe!";
+        }
+    }
+
+    public String changeRoles(long userId, String password) {
+        if (passwordEncoder.matches(password,UserContext.getCurrentUser().getEmployee().getPassword())) {
+            User user = this.userConnectorRepository.findFirstById(userId);
+            user.setRoles(new ArrayList<Role>());
+            this.userConnectorRepository.save(user);
+            return "Zmieniono uprawnienia";
+        } else {
+            return "Podane hasło jest nieprawidłowe!";
+        }
     }
 }

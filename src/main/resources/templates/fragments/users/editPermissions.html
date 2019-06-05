@@ -1,0 +1,18 @@
+<div id="permissionsList" th:fragment="permissions">
+    Edytujesz uprawnienia użytkownika <span th:text="${user.employee.name+' '+user.employee.surname}"></span>
+    <form th:action="@{'/employees/permissions/'+${user.id}}" th:object="${permissions}" method="post">
+        <div th:if="${not #lists.isEmpty(allRoles)}">
+            <table class="userPermissionsEdit">
+                <tr th:each="allRoles : ${allRoles}">
+                    <td>
+                        <input type="checkbox" th:checked="${#lists.contains(userRoles,allRoles.rolename)}" th:value="${allRoles.id}" name="permissions">
+                    </td>
+                    <td th:text="${allRoles.roleDescription}"></td>
+                </tr>
+            </table>
+            Hasło: <input type="password" id="password" name="password"> <br>
+            <input type="submit" value="Zatwierdź">
+        </div>
+    </form>
+    <span th:text="${info}"></span>
+</div>

@@ -15,4 +15,6 @@ public interface UserConnectorRepository extends CrudRepository<User,Integer> {
     User findFirstById(long id);
 
     List<Role> findAllByRoles(String usename);
+
+    List<Role> findRolesById(long id);
 }

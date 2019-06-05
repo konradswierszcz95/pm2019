@@ -39,7 +39,34 @@ public class MainController {
     @GetMapping("/cr")
     public String cr() {
         Role r1 = new Role();
-        r1.setRolename("ROOT");
+        r1.setRolename("ADD_USER")
+            .setRoleDescription("Dodawanie użytkowników");
+        this.roleInterface.save(r1);
+
+        Role r2 = new Role();
+        r2.setRolename("DELETE_USER")
+                .setRoleDescription("Usuwanie użytkowników");
+        this.roleInterface.save(r2);
+
+        Role r3 = new Role();
+        r3.setRolename("ADD_MACHINE")
+                .setRoleDescription("Dodawanie maszyn");
+        this.roleInterface.save(r3);
+
+        Role r4 = new Role();
+        r4.setRolename("DELETE_MACHINE")
+                .setRoleDescription("Usuwanie(dezaktywacja) maszyn");
+        this.roleInterface.save(r4);
+
+        Role r5 = new Role();
+        r5.setRolename("ACCEPT_FAILURE")
+                .setRoleDescription("Akceptowanie i kończenie awarii oraz dodawanie raportów");
+        this.roleInterface.save(r5);
+
+        Role r6 = new Role();
+        r6.setRolename("EDIT_PERMISSIONS")
+                .setRoleDescription("Edycja uprawnień");
+        this.roleInterface.save(r6);
 
         /*Role r2 = new Role();
         r2.setRolename("ADMIN");
@@ -47,7 +74,7 @@ public class MainController {
         Role r3 = new Role();
         r3.setRolename("USER");*/
 
-        this.roleInterface.save(r1);
+        //this.roleInterface.save(r1);
         /*this.roleInterface.save(r2);
         this.roleInterface.save(r3);
 */
@@ -57,10 +84,10 @@ public class MainController {
     @PreAuthorize("hasAnyRole('ROOT')")
     @GetMapping("/ar")
     public String addRole() {
-        User user = userConnector.findFirstById(1);
-        user.addRole(roleInterface.findById(1));
-        //user.addRole(roleInterface.findById(2));
-        //user.addRole(roleInterface.findById(3));
+        User user = userConnector.findFirstById(2);
+        user.addRole(roleInterface.findById(2));
+        user.addRole(roleInterface.findById(3));
+        user.addRole(roleInterface.findById(4));
 
         userConnector.save(user);
 

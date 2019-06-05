@@ -11,6 +11,8 @@ public class Role {
 
     private String rolename;
 
+    private String roleDescription;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private List<User> usersList;
 
@@ -37,5 +39,13 @@ public class Role {
 
     public void setUsersList(List<User> usersList) {
         this.usersList = usersList;
+    }
+
+    public String getRoleDescription() {
+        return roleDescription;
+    }
+
+    public void setRoleDescription(String roleDescription) {
+        this.roleDescription = roleDescription;
     }
 }
