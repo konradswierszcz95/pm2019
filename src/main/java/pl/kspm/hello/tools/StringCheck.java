@@ -14,7 +14,7 @@ public class StringCheck {
         return contains;
     }
 
-    public boolean emailIsCorrect(String email) {
+    public static boolean emailIsCorrect(String email) {
         if (!email.contains("@")) {
             return false;
         } else if (email.length()<5) {

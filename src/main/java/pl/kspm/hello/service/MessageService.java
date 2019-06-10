@@ -1,13 +1,12 @@
 package pl.kspm.hello.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.kspm.hello.config.UserContext;
 import pl.kspm.hello.model.Message;
 import pl.kspm.hello.model.User;
 import pl.kspm.hello.repository.MessageRepository;
-import pl.kspm.hello.repository.UserConnectorRepository;
+import pl.kspm.hello.repository.UserRepository;
 import pl.kspm.hello.tools.MsgObject;
 
 import java.sql.Timestamp;
@@ -19,11 +18,11 @@ public class MessageService {
     @Autowired
     MessageRepository messageRepository;
     @Autowired
-    UserConnectorRepository userConnectorRepository;
+    UserRepository userRepository;
 
     public int sendMsg(MsgObject msgObject) {
         Message m = new Message();
-        User user = this.userConnectorRepository.findFirstByEmployee_Login(msgObject.getAddressee());
+        User user = this.userRepository.findFirstByEmployee_Login(msgObject.getAddressee());
 
         m.setAddressee(user)
                 .setAuthor(UserContext.getCurrentUser())
@@ -31,7 +30,7 @@ public class MessageService {
                 .setContent(msgObject.getContent())
                 .setCreated(new Timestamp(new Date().getTime()));
 
-        Optional<User> optionalUser = userConnectorRepository.findByEmployee_Login(msgObject.getAddressee());
+        Optional<User> optionalUser = userRepository.findByEmployee_Login(msgObject.getAddressee());
         if (optionalUser.isPresent()) {
             this.messageRepository.save(m);
         } else {
@@ -43,7 +42,7 @@ public class MessageService {
 
     public Iterable<Message> currentUserRecivedMsg() {
         Iterable<Message> recivedMessages = this.messageRepository
-                .findAllByAddresseeEquals(userConnectorRepository
+                .findAllByAddresseeEquals(userRepository
                         .findFirstById(UserContext.getCurrentUserId()));
 
         return recivedMessages;
@@ -51,7 +50,7 @@ public class MessageService {
 
     public Iterable<Message> currentUserSendedMsg() {
         Iterable<Message> sendedMessenges = this.messageRepository
-                .findAllByAuthorEquals(userConnectorRepository.findFirstById(UserContext.getCurrentUserId()));
+                .findAllByAuthorEquals(userRepository.findFirstById(UserContext.getCurrentUserId()));
         return sendedMessenges;
     }
 

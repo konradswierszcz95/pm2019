@@ -1,6 +1,7 @@
 package pl.kspm.hello.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +50,7 @@ public class FailureController {
         return "redirect:/failures";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','ACCEPT_FAILURE')")
     @GetMapping("/failures/accept/{id}")
     public String accept(@PathVariable("id") long id, Model model) {
         this.failureService.acceptFailure(id);
@@ -62,12 +64,14 @@ public class FailureController {
         return "failures";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','ACCEPT_FAILURE')")
     @GetMapping("/failures/end/{id}")
     public String end(@PathVariable("id") long id, Model model) {
         this.failureService.endFailure(id);
         return "redirect:/failures/myEnded";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','ACCEPT_FAILURE')")
     @GetMapping("/failures/myEnded")
     public String myEndedList(Model model) {
         model.addAttribute("case","myEnded");
@@ -75,6 +79,7 @@ public class FailureController {
         return "failures";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','ACCEPT_FAILURE')")
     @GetMapping("/failures/addRaport/{id}")
     public String addRaportGet(@PathVariable("id")long id, Model model) {
         model.addAttribute("case", "addRaport");
@@ -83,6 +88,7 @@ public class FailureController {
         return "failures";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','ACCEPT_FAILURE')")
     @PostMapping("/failures/addRaport/{id}")
     public String addRaportPost(@PathVariable("id")long id, @ModelAttribute("addDocument")AddDocument addDocument) throws IOException {
         MultipartFile file = addDocument.getDocument();
@@ -91,7 +97,7 @@ public class FailureController {
         return "redirect:/failures/myEnded";
     }
 
-
+    @PreAuthorize("hasAnyRole('ROOT','ACCEPT_FAILURE')")
     @GetMapping("uploads/failures/raports/{filename}")
     @ResponseBody
     public void getRaportPattern(HttpServletResponse response, @PathVariable("filename") String fileName) {
@@ -101,6 +107,7 @@ public class FailureController {
         Downloader.download(path,"name",response);
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','ACCEPT_FAILURE')")
     @GetMapping("/failures/ended")
     public String endedList(Model model) {
         model.addAttribute("case", "ended");

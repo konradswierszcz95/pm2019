@@ -10,12 +10,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import pl.kspm.hello.repository.UserConnectorRepository;
+import pl.kspm.hello.repository.UserRepository;
 import pl.kspm.hello.service.MyUserDetailsService;
 
 @EnableGlobalMethodSecurity (prePostEnabled = true)
 @EnableWebSecurity
-@EnableJpaRepositories (basePackageClasses = UserConnectorRepository.class)
+@EnableJpaRepositories (basePackageClasses = UserRepository.class)
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -42,7 +42,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/**").authenticated()
         .anyRequest().permitAll().and().formLogin().permitAll();
-
-//        http.authorizeRequests().anyRequest().permitAll();
     }
 }

@@ -7,14 +7,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.kspm.hello.form.AddEmployeeForm;
 import pl.kspm.hello.form.Permissions;
-import pl.kspm.hello.model.Role;
-import pl.kspm.hello.model.User;
-import pl.kspm.hello.repository.UserConnectorRepository;
+import pl.kspm.hello.model.*;
 import pl.kspm.hello.service.EmployeeService;
 import pl.kspm.hello.service.RoleService;
-import pl.kspm.hello.tools.UserObject;
 
-import java.util.Collection;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 
@@ -25,6 +23,8 @@ public class EmployeeControler {
     @Autowired
     RoleService roleService;
 
+    private String info;
+    private User temporarilyUser;
     @GetMapping("/employees")
     public String getAllEmployees(Model model) {
         model.addAttribute("case","list");
@@ -33,34 +33,58 @@ public class EmployeeControler {
     }
 
 
-    @PreAuthorize("hasAnyRole('ROOT')")
+    @PreAuthorize("hasAnyRole('ROOT','ADD_USER')")
     @RequestMapping(value = "/employees/addEmployee", method = RequestMethod.GET)
     public String getAddEmployeeForm(Model model) {
         model.addAttribute("case","addUser");
+        model.addAttribute("info", info);
+
+        model.addAttribute("user", temporarilyUser);
+
+        info="";
         return "employees";
     }
 
-    @PreAuthorize("hasAnyRole('ROOT')")
+    @PreAuthorize("hasAnyRole('ROOT','ADD_USER')")
     @RequestMapping(value = "/employees/addEmployee", method = RequestMethod.POST)
     public String addEmployee(@ModelAttribute(name = "addEmployeeForm")AddEmployeeForm addEmployeeForm, Model model) {
-        UserObject userObject = new UserObject();
-        userObject.setFirstName(addEmployeeForm.getEmployeeName())
-                .setLastName(addEmployeeForm.getEmployeeSurname())
-                .setEmail(addEmployeeForm.getEmployeeEmail())
-                .setLocality(addEmployeeForm.getEmployeeLocality())
-                .setStreet(addEmployeeForm.getEmployeeStreet())
-                .setZipCode(addEmployeeForm.getEmployeeZipCode())
-                .setPostLocality(addEmployeeForm.getEmployeePostLocality())
+        User user = new User();
+        Employee employee = new Employee();
+        Account account = new Account();
+        Address address = new Address();
+
+        employee.setEmail(addEmployeeForm.getEmployeeEmail())
+                .setPhone(addEmployeeForm.getEmployeePhone())
+                .setName(addEmployeeForm.getEmployeeName())
+                .setSurname(addEmployeeForm.getEmployeeSurname());
+
+        account.setIsActive(true)
+                .setCreated(new Timestamp(new Date().getTime()));
+
+        address.setCountry(addEmployeeForm.getEmployeeCountry())
                 .setHouseNumber(addEmployeeForm.getEmployeeHouseNumber())
-                .setCountry(addEmployeeForm.getEmployeeCountry())
-                .setPhone(addEmployeeForm.getEmployeePhone());
+                .setLocality(addEmployeeForm.getEmployeeLocality())
+                .setPostLocality(addEmployeeForm.getEmployeePostLocality())
+                .setStreet(addEmployeeForm.getEmployeeStreet())
+                .setZipCode(addEmployeeForm.getEmployeeZipCode());
 
-        int errorCode = employeeService.addNewEmployee(userObject);
+        user.setEmployee(employee)
+                .setAccount(account)
+                .setAddress(address);
 
-        model.addAttribute("errorMessage",employeeService.errorMessage(errorCode));
-        return "redirect:/employees";
+        info = employeeService.addNewEmployee(user);
+
+        if (info.equals("Dodano użytkownika")) {
+            temporarilyUser=null;
+        } else {
+            temporarilyUser = user;
+        }
+
+        model.addAttribute("info",info);
+        return "redirect:/employees/addEmployee";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','EDIT_PERMISSIONS')")
     @GetMapping ("/employees/permissions/{userId}")
     public String editPermissions(@PathVariable("userId") long id, Model model) {
         List<Role> roles = this.employeeService.getRoleList();
@@ -71,30 +95,73 @@ public class EmployeeControler {
         model.addAttribute("allRoles",roles);
         model.addAttribute("userRoles",userRoles);
         model.addAttribute("user",user);
+        model.addAttribute("info",info);
+        info="";
 
-        for (String r:
-             userRoles) {
-            System.out.println(r);
-        }
-
-        return "/employees";
+        return "employees";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','EDIT_PERMISSIONS')")
     @PostMapping("/employees/permissions/{userId}")
     public String postEditPermissions(@PathVariable("userId") long id, Model model,
                                       @RequestParam(value = "permissions" , required = false) int[] permissions,
                                       @ModelAttribute(name = "permissions") Permissions pass) {
         String password = pass.getPassword();
-        String info;
         if (permissions!=null) {
             info = this.employeeService.changeRoles(permissions,id,password);
         } else {
             info = this.employeeService.changeRoles(id,password);
         }
-        System.out.println(info);
         model.addAttribute("info",info);
         model.addAttribute("case","permissions");
         model.addAttribute("user",this.employeeService.getUserById(id));
-        return "/employees";
+        return "redirect:/employees/permissions/"+id;
     }
+
+    @PreAuthorize("hasAnyRole('ROOT','DELETE_USER')")
+    @GetMapping("/employees/delete/{userId}")
+    public String userDeleteGet(@PathVariable("userId") long id, Model model) {
+        model.addAttribute("case","delete");
+        model.addAttribute("user",this.employeeService.getUserById(id));
+        model.addAttribute("info",info);
+        info="";
+        return "employees";
+    }
+
+    @PreAuthorize("hasAnyRole('ROOT','DELETE_USER')")
+    @PostMapping("/employees/delete/{userId}")
+    public String userDeletePost(@PathVariable("userId") long id, @RequestParam(value = "password") String password,
+                                 Model model) {
+        info = this.employeeService.lockUser(id,password);
+        model.addAttribute("info",info);
+        return "redirect:/employees/delete/"+id;
+    }
+
+    @PreAuthorize("hasAnyRole('ROOT','DELETE_USER','ADD_USER')")
+    @GetMapping("/employees/deleted")
+    public String deletedUsersList(Model model) {
+        model.addAttribute("case","deleted");
+        model.addAttribute("userList",this.employeeService.getAllNotActive());
+        return "employees";
+    }
+
+    @PreAuthorize("hasAnyRole('ROOT','ADD_USER')")
+    @GetMapping("/employees/deleted/{id}")
+    public String redoDeletedUser(Model model,@PathVariable("id")long id) {
+        model.addAttribute("case","redo");
+        model.addAttribute("user",this.employeeService.getUserById(id));
+        model.addAttribute("info",info);
+        info="";
+
+        return "employees";
+    }
+
+    @PreAuthorize("hasAnyRole('ROOT','ADD_USER')")
+    @PostMapping("/employees/deleted/{id}")
+    public String redoDeletedUserPost(@RequestParam(value = "password") String pass,
+                                      @PathVariable("id") long id, @RequestParam(value = "email") String email) {
+        info = this.employeeService.unlockUser(id,pass,email);
+        return "redirect:/employees/deleted/"+id;
+    }
+
 }

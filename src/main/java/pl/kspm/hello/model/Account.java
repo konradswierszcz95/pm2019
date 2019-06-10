@@ -27,11 +27,11 @@ public class Account {
         return this;
     }
 
-    public boolean isActive() {
+    public boolean getIsActive() {
         return isActive;
     }
 
-    public Account setActive(boolean active) {
+    public Account setIsActive(boolean active) {
         isActive = active;
         return this;
     }

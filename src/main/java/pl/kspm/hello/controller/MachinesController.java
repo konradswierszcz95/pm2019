@@ -3,6 +3,7 @@ package pl.kspm.hello.controller;
 import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,12 +36,14 @@ public class MachinesController {
         return "machines";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','ADD_MACHINE')")
     @GetMapping("/machines/add")
     public String addMachine(Model model){
         model.addAttribute("case","add");
         return "machines";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','ADD_MACHINE')")
     @PostMapping("/machines/add")
     public String add(@ModelAttribute(name = "addMachine")AddMachine addMachine) throws IOException, WriterException {
         Machine machine = new Machine();
@@ -64,6 +67,7 @@ public class MachinesController {
         return "machines";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','ADD_MACHINE')")
     @GetMapping("/machines/addFoto/{id}")
     public String addMachineFoto(@PathVariable("id") long id, Model model) {
         model.addAttribute("machine",this.machineService.getMachineById(id));
@@ -71,6 +75,7 @@ public class MachinesController {
         return "machines";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','ADD_MACHINE')")
     @PostMapping("/machines/addFoto/{id}")
     public String fotoAddPost(@PathVariable("id") long id, Model model, @RequestParam("foto") MultipartFile file) throws IOException {
         this.machineService.addFoto(id,file);
@@ -78,6 +83,7 @@ public class MachinesController {
         return "redirect:/machines/"+id;
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','ADD_MACHINE')")
     @GetMapping("/machines/addDocuments/{id}")
     public String addDocuments (@PathVariable("id") long id, Model model) {
         model.addAttribute("machine",this.machineService.getMachineById(id));
@@ -85,6 +91,7 @@ public class MachinesController {
         return "machines";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','ADD_MACHINE')")
     @PostMapping("/machines/addDocuments/{id}")
     public String documentAddPost(@PathVariable("id") long id, Model model, @ModelAttribute("addDocument") AddDocument addDocument) throws IOException{
         MultipartFile file = addDocument.getDocument();
@@ -96,6 +103,7 @@ public class MachinesController {
         return "redirect:/machines/"+id;
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','ADD_MACHINE','ACCEPT_FAILURE')")
     @GetMapping("/uploads/machines/documents/{id}/{filename}")
     @ResponseBody
     public void downloadDocument(@PathVariable("id") long id, @PathVariable("filename") String fileName, HttpServletResponse response) {

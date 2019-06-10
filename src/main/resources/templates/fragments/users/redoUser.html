@@ -1,0 +1,10 @@
+<div id="redo" th:fragment="redo">
+    Przywróć użytkownika <span th:text="${user.employee.name+' '+user.employee.surname}"></span> <br>
+    Zostanie wygenerowane nowe hasło i wysłane na adres email podany przy pierwszej rejestracji, lub na nowo podany adres:
+    <form th:action="@{'/employees/deleted/'+${user.id}}" th:object="${redo}" method="post">
+            Nowy e-mail: <input type="text" id="email" name="email"> jeśli nie został zmieniony pole można pozostawić puste <br>
+            Hasło: <input type="password" id="password" name="password"> <br>
+            <input type="submit" value="Przywróć">
+        <span th:text="${info}"></span>
+    </form>
+</div>

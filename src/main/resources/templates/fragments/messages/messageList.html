@@ -3,9 +3,9 @@
     <div th:if="${not #lists.isEmpty(recivedMsg)}">
         <table class="recived-messages">
             <tr>
-                <td class="toDes">Autor</td>
-                <td class="subjectDes">Temat</td>
-                <td class="dateDes">Otrzymano</td>
+                <th class="toDes">Autor</th>
+                <th class="subjectDes">Temat</th>
+                <th class="dateDes">Otrzymano</th>
             </tr>
             <tr th:each="recivedMsg : ${recivedMsg}">
                 <td th:text="${recivedMsg.author.employee.name+' '+recivedMsg.author.employee.surname}" class="msgList"></td>

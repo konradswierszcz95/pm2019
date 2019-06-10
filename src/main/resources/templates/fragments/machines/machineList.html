@@ -2,11 +2,11 @@
     <div th:if="${not #lists.isEmpty(machineList)}">
         <table class="machineList">
             <tr>
-                <td>Producent</td>
-                <td>Model</td>
-                <td>Serwis</td>
-                <td>Budynek/Miejsce</td>
-                <td>Podgląd:</td>
+                <th>Producent</th>
+                <th>Model</th>
+                <th>Serwis</th>
+                <th>Budynek/Miejsce</th>
+                <th>Podgląd:</th>
             </tr>
             <tr th:each="machineList : ${machineList}">
                 <td th:text="${machineList.producer}" class="msgList"></td>

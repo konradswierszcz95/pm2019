@@ -3,7 +3,7 @@ package pl.kspm.hello.tools;
 import java.util.Random;
 
 public class TokenGenerator {
-    public String generateToken() {
+    public static String generateToken() {
         Random random = new Random();
         String token="";
 

@@ -1,0 +1,9 @@
+<div id="delete" th:fragment="delete">
+    Usuń użytkownika <span th:text="${user.employee.name+' '+user.employee.surname}"></span> <br>
+    W rzeczywistości użytkownik jest ukrywany i blokowany co pozwala na odblokowanie konta.
+    <form th:action="@{'/employees/delete/'+${user.id}}" th:object="${delete}" method="post">
+            Hasło: <input type="password" id="password" name="password"> <br>
+            <input type="submit" value="Zablokuj">
+        <span th:text="${info}"></span>
+    </form>
+</div>

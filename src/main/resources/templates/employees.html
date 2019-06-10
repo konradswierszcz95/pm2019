@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add</title>
+    <title>Pracownicy</title>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/defaultStyle.css}">
 </head>
@@ -19,12 +19,16 @@
             <div class="top-bar">
                 <a class="navLink" href="/employees"> --Lista-- |</a>
                 <a class="navLink" href="/employees/addEmployee"> --Dodaj-- |</a>
+                <a class="navLink" href="/employees/deleted"> --Usunięci-- |</a>
             </div>
 
 
             <span th:if="${case=='addUser'}"><div th:replace="fragments/users/addUser :: addUser"></div></span>
             <span th:if="${case=='list'}"><div th:replace="fragments/users/users :: users"></div></span>
             <span th:if="${case=='permissions'}"><div th:replace="fragments/users/editPermissions :: permissions"></div></span>
+            <span th:if="${case=='delete'}"><div th:replace="fragments/users/deleteUser :: delete"></div></span>
+            <span th:if="${case=='deleted'}"><div th:replace="fragments/users/deleted :: deleted"></div></span>
+            <span th:if="${case=='redo'}"><div th:replace="fragments/users/redoUser :: redo"></div></span>
 
         </div>
 

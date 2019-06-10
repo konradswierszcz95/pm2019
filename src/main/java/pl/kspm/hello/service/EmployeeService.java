@@ -2,19 +2,15 @@ package pl.kspm.hello.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.kspm.hello.config.UserContext;
 import pl.kspm.hello.model.*;
-import pl.kspm.hello.repository.AddressRepository;
 import pl.kspm.hello.repository.EmployeeRepository;
 import pl.kspm.hello.repository.RoleInterface;
-import pl.kspm.hello.repository.UserConnectorRepository;
+import pl.kspm.hello.repository.UserRepository;
 import pl.kspm.hello.tools.*;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,117 +21,56 @@ public class EmployeeService {
     private EmailSenderService ess;
     @Autowired
     private RoleInterface roleInterface;
-    @Autowired
-    private UserConnectorRepository userConnectorRepository;
+    @Autowired(required = true)
+    private UserRepository userRepository;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public String errorMessage (int errorCode) {
-        //Informacje zwrotne po próbie dodania pracownika
-        switch (errorCode) {
-            case 0:
-                return "Dodano pracownika";
-            case 1:
-                return "Adres E-mail jest zajęty";
-            case 2:
-                return "Imię zawiera niedozwolone znaki";
-            case 3:
-                return "Nazwisko zawiera niedozwolone znaki";
-            case 4:
-                return "Podany E-mail jest niepoprawny";
-            case 5:
-                return "Imię jest za krótkie";
-            case 6:
-                return "Nazwisko jest za krótkie";
-            default:
-                return "Taki adres błędu nie istnieje!";
-
-        }
-    }
-
-    public int addNewEmployee(UserObject userObject){
-        StringCheck spc = new StringCheck();
-        //Tworzenie nowego pracownika na podstawie podanych wartości
-        Employee e = new Employee();
-        e.setName(userObject.getFirstName())
-                .setSurname(userObject.getLastName())
-                .setEmail(userObject.getEmail());
-
-        Address address = new Address();
-        address.setCountry(userObject.getCountry())
-                .setHouseNumber(userObject.getHouseNumber())
-                .setLocality(userObject.getLocality())
-                .setStreet(userObject.getStreet())
-                .setZipCode(userObject.getZipCode())
-                .setPostLocality(userObject.getPostLocality());
-
-        Account account = new Account();
-        account.setActive(false)
-                .setCreated(new Timestamp(new Date().getTime()));
-
-        User user = new User();
-        user.setEmployee(e)
-                .setAddress(address)
-                .setAccount(account);
-        //===========================================================
-
+    public String addNewEmployee(User user){
         //Automatyczne utworzenie loginu i dodanie do obiektu pracownika
-        CreateLogin cl = new CreateLogin(userObject.getFirstName(),userObject.getLastName(),employeeRepository);
-        String login = cl.create();
-        e.setLogin(login);
+        CreateLogin cl = new CreateLogin(user.getEmployee().getName(),user.getEmployee().getSurname(),employeeRepository);
+        user.getEmployee().setLogin(cl.create());
         //===========================================================
 
         //Generowanie jednorazowego tokena do pierwszego logowania
-        TokenGenerator tokenGenerator = new TokenGenerator();
-        String token = tokenGenerator.generateToken();
-        e.setPassword(passwordEncoder.encode(token));
+        String token = TokenGenerator.generateToken();
+        user.getEmployee().setPassword(passwordEncoder.encode(token));
         //===========================================================
 
-        e.setPhone(userObject.getPhone());
 
         //Formułowanie treści e-maila rejestracyjnego
-        String content = "Witaj "+userObject.getFirstName()+" "+userObject.getLastName();
-        content+="\nTa wiadomość potwierdza założenie Twojego konta w systemie firmy Praca Magisterska";
-        content+="\nDane do logowania:";
-        content+="\nlogin: "+login;
-        content+="\nhasło: "+token;
-        content+="\nHasło zostało wygenerowane automatycznie i wymagana będzie jego zmiana podczas pierwszego logowania.";
-        content+="\n====================================================================================================";
-        content+="\nJeżeli ta wiadomość nie była adresowana do Ciebie, prosimy zgłoś to pod adresem: zgłoś@dupa.pl";
+        String content = CreateEmail.form(user.getEmployee().getName(),user.getEmployee().getSurname(),user.getEmployee().getLogin(),token);
         //===========================================================
 
-        //Ustawienie kodu błędu informacji zwortnej dla osoby tworzącej użytkownika
-        if (employeeRepository.existsByEmail(userObject.getEmail())) {
-            return 1;
-        } else if (spc.containsSpecialSign(userObject.getFirstName())) {
-            return 2;
-        } else if (spc.containsSpecialSign(userObject.getLastName())) {
-            return 3;
-        } else if (!spc.emailIsCorrect(userObject.getEmail())) {
-            return 4;
-        } else if (userObject.getFirstName().length()<3) {
-            return 5;
-        } else if (userObject.getLastName().length()<3) {
-            return 6;
+        //Ustawienie informacji zwortnej dla osoby tworzącej użytkownika
+        if (employeeRepository.existsByEmail(user.getEmployee().getEmail())) {
+            return "Użytkownik o takim adresie e-mail już istnieje!";
+        } else if (StringCheck.containsSpecialSign(user.getEmployee().getName()) || user.getEmployee().getName().length()<3) {
+            return "Imię użytkownika jest niepoprawne";
+        } else if (StringCheck.containsSpecialSign(user.getEmployee().getSurname()) || user.getEmployee().getSurname().length()<3) {
+            return "Nazwisko użytkownika jest niepoprawne";
+        } else if (!StringCheck.emailIsCorrect(user.getEmployee().getEmail())) {
+            return "E-mail jest niepoprawny";
         } else {
-            sendEmail(userObject.getEmail(),content,token);
-            this.userConnectorRepository.save(user);
-            return 0;
+            user.setDtype();
+            this.userRepository.save(user);
+            sendEmail(user.getEmployee().getEmail(),content);
+            return "Dodano użytkownika";
         }
         //====================================================================
     }
 
     public Iterable<User> getAllEmployees() {
-        Iterable<User> users =  this.userConnectorRepository.findAll();
+        Iterable<User> users =  this.userRepository.findAll();
         return users;
     }
 
-    public void sendEmail(String email, String content, String token) {
+    public void sendEmail(String email, String content) {
         ess.sendEmail(email,"Praca Magisterska - konto zostało utworzone",content);
     }
 
     public User getUserById(long id) {
-        return this.userConnectorRepository.findFirstById(id);
+        return this.userRepository.findFirstById(id);
     }
 
     public List<Role> getRoleList() {
@@ -147,7 +82,7 @@ public class EmployeeService {
     }
 
     public List<String> getRoleListById(long id) {
-        User user = this.userConnectorRepository.findFirstById(id);
+        User user = this.userRepository.findFirstById(id);
         List<Role> roles = user.getRoles();
         List<String> rolenames = new ArrayList<>();
 
@@ -159,8 +94,8 @@ public class EmployeeService {
     }
 
     public String changeRoles(int[] rolesList, long userId, String password) {
-        if (passwordEncoder.matches(password,UserContext.getCurrentUser().getEmployee().getPassword())) {
-            User user = this.userConnectorRepository.findFirstById(userId);
+        if (passwordEncoder.matches(password, UserContext.getCurrentUser().getEmployee().getPassword()) && userId != 1) {
+            User user = this.userRepository.findFirstById(userId);
             List<Role> newRoles = new ArrayList<>();
 
             for (int i :
@@ -169,19 +104,95 @@ public class EmployeeService {
             }
 
             user.setRoles(newRoles);
-            this.userConnectorRepository.save(user);
+            this.userRepository.save(user);
             return "Zmieniono uprawnienia";
-        } else {
+        } else if(userId==1) {
+            return "Zmiana uprawnień użytkownika ROOT jest niemożliwa!";
+        }else {
             return "Podane hasło jest nieprawidłowe!";
         }
     }
 
     public String changeRoles(long userId, String password) {
-        if (passwordEncoder.matches(password,UserContext.getCurrentUser().getEmployee().getPassword())) {
-            User user = this.userConnectorRepository.findFirstById(userId);
+        if (passwordEncoder.matches(password,UserContext.getCurrentUser().getEmployee().getPassword()) && userId!=1) {
+            User user = this.userRepository.findFirstById(userId);
             user.setRoles(new ArrayList<Role>());
-            this.userConnectorRepository.save(user);
+            this.userRepository.save(user);
             return "Zmieniono uprawnienia";
+        } else if (userId==1) {
+            return "Zmiana uprawnień użytkownika ROOT jest niemożliwa!";
+        } else {
+            return "Podane hasło jest nieprawidłowe!";
+        }
+    }
+
+    public String lockUser(long id, String password) {
+        if (passwordEncoder.matches(password,UserContext.getCurrentUser().getEmployee().getPassword())) {
+            User user = this.userRepository.findFirstById(id);
+            if (user.getAccount().getIsActive() && id!=1 && id!=UserContext.getCurrentUserId()) {
+                user.getAccount().setIsActive(false);
+                this.userRepository.save(user);
+                return "Konto użytkownika "+user.getEmployee().getName()+" "+user.getEmployee().getSurname()+" zostało zablokowane";
+            } else if (id==1){
+                return "Nie można zablokować konta ROOT!";
+            } else if (id==UserContext.getCurrentUserId()) {
+                return "Nie można zablokować własnego konta!";
+            } else {
+                return "Użytkownik jest już zablokowany";
+            }
+        } else {
+            return "Hasło nieprawidłowe!";
+        }
+    }
+
+    public List<User> getAllNotActive() {
+       Iterable<User> list = this.userRepository.findAll();
+       List<User> notActiveList = new ArrayList<>();
+        for (User u:
+             list) {
+            if (!u.getAccount().getIsActive()) {
+                notActiveList.add(u);
+                System.out.println(u.getEmployee().getSurname());
+            }
+        }
+     return notActiveList;
+    }
+
+    public String unlockUser(long id, String pass, String email) {
+        //Sprawdzenie poprawności podanego hasła
+        if (passwordEncoder.matches(pass,UserContext.getCurrentUser().getEmployee().getPassword())) {
+            User user = this.userRepository.findFirstById(id);
+
+            //Jeżeli podano nowy adres e-mail to ustaw go jako obecny
+            if (!email.isEmpty()) {
+                user.getEmployee().setEmail(email);
+                this.userRepository.save(user);
+            }
+
+            if (!user.getAccount().getIsActive()) {
+                //Aktywowanie użytkownika
+                user.getAccount().setIsActive(true);
+
+                //Generownie nowego hasłą
+                String newPassword = TokenGenerator.generateToken();
+
+                //Ustawianie nowego hasłą po wcześniejszym zahashowaniu
+                user.getEmployee().setPassword(this.passwordEncoder.encode(newPassword));
+
+                //Wysyłanie wiadomości e-mail z nowymi danymi do logowania
+                String content = CreateEmail.form(user.getEmployee().getName(),user.getEmployee().getSurname(),
+                        user.getEmployee().getLogin(),newPassword);
+
+                sendEmail(user.getEmployee().getEmail(),content);
+
+                //Zapisanie użytkownika do bazy danych
+                this.userRepository.save(user);
+
+                //Informacja zwrotna
+                return "Przywrócono użytkownika";
+            } else {
+                return "Użytkownik jest aktywny!";
+            }
         } else {
             return "Podane hasło jest nieprawidłowe!";
         }

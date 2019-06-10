@@ -2,25 +2,40 @@
     <div th:if="${not #lists.isEmpty(userList)}">
         <table class="userList">
             <tr>
-                <td>Imię</td>
-                <td>Nazwisko</td>
-                <td>Telefon służbowy</td>
-                <td>Adres do wiadomości</td>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th>Telefon służbowy</th>
+                <th>Adres do wiadomości</th>
+                <th>Uprawnienia</th>
+                <th>Usuń</th>
             </tr>
             <tr th:each="userList : ${userList}">
-                <td th:text="${userList.employee.name}" class="msgList"></td>
-                <td th:text="${userList.employee.surname}" class="msgList"></td>
-                <td>
-                    <span th:if="${userList.employee.phone != null}">
-                        <span th:text="${userList.employee.phone}" class="msgList"></span>
-                    </span>
-                </td>
-                <td>
-                    <a th:href="@{'/sendMessage/sendTo/'+${userList.employee.id}}">
-                        <span th:text="${userList.employee.login}" class="msgList"></span>
-                    </a>
-                </td>
+                <span th:if="${userList.account.isActive}">
+                    <td th:text="${userList.employee.name}" class="msgList"></td>
+                    <td th:text="${userList.employee.surname}" class="msgList"></td>
+                    <td>
+                        <span th:if="${userList.employee.phone != null}">
+                            <span th:text="${userList.employee.phone}" class="msgList"></span>
+                        </span>
+                    </td>
+                    <td>
+                        <a th:href="@{'/sendMessage/sendTo/'+${userList.employee.id}}">
+                            <span th:text="${userList.employee.login}" class="msgList"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{'/employees/permissions/'+${userList.employee.id}}">
+                            [EDYTUJ]
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{'/employees/delete/'+${userList.employee.id}}">
+                            [USUŃ]
+                        </a>
+                    </td>
+                </span>
             </tr>
+
         </table>
     </div>
 </div>

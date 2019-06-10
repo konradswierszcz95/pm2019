@@ -1,0 +1,24 @@
+<div id="deletedList" th:fragment="deleted">
+    <div th:if="${not #lists.isEmpty(userList)}">
+        Lista usuniętych użytkowników:
+        <table class="userList">
+            <tr>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th>Adres e-mail</th>
+                <th>Przywróć</th>
+            </tr>
+            <tr th:each="userList : ${userList}">
+                    <td th:text="${userList.employee.name}" class="msgList"></td>
+                    <td th:text="${userList.employee.surname}" class="msgList"></td>
+                    <td th:text="${userList.employee.email}" class="msgList"></td>
+                    <td>
+                        <a th:href="@{'/employees/deleted/'+${userList.employee.id}}">
+                            [PRZYWRÓĆ]
+                        </a>
+                    </td>
+            </tr>
+
+        </table>
+    </div>
+</div>

@@ -1,39 +1,101 @@
 <div id="addUser" th:fragment="addUser">
     <form th:action="@{/employees/addEmployee}" th:object="${addEmployeeForm}" method="post">
-        <label for="employeeName">Imię:</label>
-        <input type="text" id="employeeName" name="employeeName" autofocus="autofocus"/><br>
+        <table class="msgList">
+        <tr>
+            <td>Imię:</td>
+            <td>
+                <span th:if="${user!=null}">
+                    <input type="text" name="employeeName" autofocus="autofocus"  th:value="${user.employee.name}"/>
+                </span>
+                <span th:if="${user==null}">
+                    <input type="text" name="employeeName" autofocus="autofocus"/>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>Nazwisko:</td>
+            <span th:if="${user!=null}">
+                <td> <input type="text"  name="employeeSurname" th:value="${user.employee.surname}"/></td>
+            </span>
+            <span th:if="${user==null}">
+                <td><input type="text"  name="employeeSurname"/></td>
+            </span>
+        </tr>
+        <tr>
+            <td>Telefon służbowy:</td>
+            <span th:if="${user!=null}">
+                <td><input type="text"  name="employeePhone"   th:value="${user.employee.phone}"/></td>
+            </span>
+            <span th:if="${user==null}">
+                <td><input type="text"  name="employeePhone"/></td>
+            </span>
+        </tr>
+        <tr>
+            <td>E-mail:</td>
+            <span th:if="${user!=null}">
+                <td><input type="text"  name="employeeEmail"  th:value="${user.employee.email}"/></td>
+            </span>
+            <span th:if="${user==null}">
+                <td><input type="text"  name="employeeEmail"/></td>
+            </span>
+        </tr>
+        <tr>
+            <td>Miejscowość:</td>
+            <span th:if="${user!=null}">
+                <td><input type="text"  name="employeeLocality"  th:value="${user.address.locality}"/></td>
+            </span>
+            <span th:if="${user==null}">
+                <td><input type="text"  name="employeeLocality"/></td>
+            </span>
+        </tr>
+        <tr>
+            <td>Ulica:</td>
+            <span th:if="${user!=null}">
+            <td><input type="text"  name="employeeStreet"  th:value="${user.address.street}"/></td>
+            </span>
+            <span th:if="${user==null}">
+                <td><input type="text"  name="employeeStreet"/></td>
+            </span>
 
-        <label for="employeeSurname">Nazwisko:</label>
-        <input type="text" id="employeeSurname" name="employeeSurname"/><br>
-
-        <label for="employeePhone">Telefon służbowy:</label>
-        <input type="text" id="employeePhone" name="employeePhone"/><br>
-
-        <label for="employeeEmail">E-mail:</label>
-        <input type="text" id="employeeEmail" name="employeeEmail"/><br>
-
-        <label for="employeeLocality">Miejscowość:</label>
-        <input type="text" id="employeeLocality" name="employeeLocality"/><br>
-
-        <label for="employeeStreet">Ulica:</label>
-        <input type="text" id="employeeStreet" name="employeeStreet"/><br>
-
-        <label for="employeeZipCode">Kod pocztowy:</label>
-        <input type="text" id="employeeZipCode" name="employeeZipCode"/><br>
-
-        <label for="employeePostLocality">Poczta:</label>
-        <input type="text" id="employeePostLocality" name="employeePostLocality"/><br>
-
-        <label for="employeeHouseNumber">Numer domu:</label>
-        <input type="text" id="employeeHouseNumber" name="employeeHouseNumber"/><br>
-
-        <label for="employeeCountry">Państwo:</label>
-        <input type="text" id="employeeCountry" name="employeeCountry"/><br>
-
+        </tr>
+        <tr>
+            <td>Kod pocztowy:</td>
+            <span th:if="${user!=null}">
+            <td><input type="text"  name="employeeZipCode"  th:value="${user.address.zipCode}"/></td>
+                </span>
+            <span th:if="${user==null}">
+                <td><input type="text"  name="employeeZipCode"/></td>
+            </span>
+        </tr>
+        <tr>
+            <td>Poczta:</td>
+            <span th:if="${user!=null}">
+            <td><input type="text"  name="employeePostLocality" th:value="${user.address.postLocality}"/></td>
+                </span>
+            <span th:if="${user==null}">
+                <td><input type="text"  name="employeePostLocality"/></td>
+            </span>
+        </tr>
+        <tr>
+            <td>Numer domu:</td>
+            <span th:if="${user!=null}">
+            <td><input type="text"  name="employeeHouseNumber" th:value="${user.address.houseNumber}"/></td>
+                </span>
+            <span th:if="${user==null}">
+                <td><input type="text"  name="employeeHouseNumber"/></td>
+            </span>
+        </tr>
+        <tr>
+            <td>Państwo:</td>
+            <span th:if="${user!=null}">
+            <td><input type="text"  name="employeeCountry" th:value="${user.address.country}"/></td>
+                </span>
+            <span th:if="${user==null}">
+                <td><input type="text"  name="employeeCountry"/></td>
+            </span>
+        </tr>
+        </table>
         <input type="submit" value="Dodaj pracownika"/>
     </form>
-
-    <div id="backMassageDiv">
-        <normal th:text="${errorMessage}"/>
-    </div>
+    <span th:text="${info}"></span>
 </div>

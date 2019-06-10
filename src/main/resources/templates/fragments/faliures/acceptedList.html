@@ -3,13 +3,13 @@
     <div th:if="${not #lists.isEmpty(failuresList)}">
         <table class="failuresList">
             <tr>
-                <td>Id</td>
-                <td>Maszyna</td>
-                <td>Zgłoszono</td>
-                <td>Zgłosił</td>
-                <td>Przyjęto</td>
-                <td>Przyjął</td>
-                <td>Zakończ</td>
+                <th>Id</th>
+                <th>Maszyna</th>
+                <th>Zgłoszono</th>
+                <th>Zgłosił</th>
+                <th>Przyjęto</th>
+                <th>Przyjął</th>
+                <th>Zakończ</th>
             </tr>
             <tr th:each="failuresList : ${failuresList}">
                 <span th:if="${failuresList.isAccept==1 and failuresList.ended==null}">

@@ -1,20 +1,19 @@
 package pl.kspm.hello.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.kspm.hello.config.UserContext;
 import pl.kspm.hello.model.Employee;
 import pl.kspm.hello.model.User;
 import pl.kspm.hello.repository.EmployeeRepository;
-import pl.kspm.hello.repository.UserConnectorRepository;
+import pl.kspm.hello.repository.UserRepository;
 import pl.kspm.hello.tools.StringCheck;
 
 @Service
 public class AccountService {
     @Autowired
-    UserConnectorRepository userConnectorRepository;
+    UserRepository userRepository;
     @Autowired
     EmployeeRepository employeeRepository;
 
@@ -27,7 +26,7 @@ public class AccountService {
     public String changePassword(String oldPass, String newPass, String repeat) {
         User user = UserContext.getCurrentUser();
         long id = user.getId();
-        Employee employee = this.userConnectorRepository.findFirstById(id).getEmployee();
+        Employee employee = this.userRepository.findFirstById(id).getEmployee();
 
         String actualPass = user.getEmployee().getPassword();
 

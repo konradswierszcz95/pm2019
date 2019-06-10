@@ -3,12 +3,12 @@
         Naprawione awarie:
         <table class="failuresList">
             <tr>
-                <td>Id</td>
-                <td>Maszyna</td>
-                <td>Zakończono naprawę</td>
-                <td>Naprawił</td>
-                <td>Krótki opis</td>
-                <td>Raport</td>
+                <th>Id</th>
+                <th>Maszyna</th>
+                <th>Zakończono naprawę</th>
+                <th>Naprawił</th>
+                <th>Krótki opis</th>
+                <th>Raport</th>
             </tr>
             <tr th:each="failuresList : ${failuresList}">
                 <td th:text="${failuresList.id}" class="msgList"></td>

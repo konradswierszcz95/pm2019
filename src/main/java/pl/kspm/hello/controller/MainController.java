@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import pl.kspm.hello.model.*;
 import pl.kspm.hello.repository.MachineRepository;
 import pl.kspm.hello.repository.RoleInterface;
-import pl.kspm.hello.repository.UserConnectorRepository;
+import pl.kspm.hello.repository.UserRepository;
 import pl.kspm.hello.service.FailureService;
 import pl.kspm.hello.tools.Pathes;
 import pl.kspm.hello.tools.QRcodeGenerator;
@@ -22,7 +22,7 @@ public class MainController {
     @Autowired
     RoleInterface roleInterface;
     @Autowired
-    UserConnectorRepository userConnector;
+    UserRepository userConnector;
     @Autowired
     MachineRepository machineRepository;
     @Autowired
@@ -38,6 +38,11 @@ public class MainController {
     @PreAuthorize("hasAnyRole('ROOT')")
     @GetMapping("/cr")
     public String cr() {
+        /*Role r = new Role();
+        r.setRolename("ROOT")
+                .setRoleDescription("root");
+        this.roleInterface.save(r);
+
         Role r1 = new Role();
         r1.setRolename("ADD_USER")
             .setRoleDescription("Dodawanie użytkowników");
@@ -68,28 +73,28 @@ public class MainController {
                 .setRoleDescription("Edycja uprawnień");
         this.roleInterface.save(r6);
 
-        /*Role r2 = new Role();
+        Role r2 = new Role();
         r2.setRolename("ADMIN");
 
         Role r3 = new Role();
-        r3.setRolename("USER");*/
+        r3.setRolename("USER");
 
         //this.roleInterface.save(r1);
         /*this.roleInterface.save(r2);
-        this.roleInterface.save(r3);
-*/
+        this.roleInterface.save(r3);*/
+
         return "hello";
     }
 
     @PreAuthorize("hasAnyRole('ROOT')")
     @GetMapping("/ar")
     public String addRole() {
-        User user = userConnector.findFirstById(2);
-        user.addRole(roleInterface.findById(2));
-        user.addRole(roleInterface.findById(3));
-        user.addRole(roleInterface.findById(4));
+        /*User user = userConnector.findFirstById(1);
+        user.addRole(roleInterface.findById(1));
+        //user.addRole(roleInterface.findById(3));
+        //user.addRole(roleInterface.findById(4));
 
-        userConnector.save(user);
+        userConnector.save(user);*/
 
         return "hello";
     }

@@ -3,12 +3,12 @@
         Awarie zgłoszone:
         <table class="failuresList">
             <tr>
-                <td>Id</td>
-                <td>Maszyna</td>
-                <td>Zgłoszono</td>
-                <td>Zgłosił</td>
-                <td>Krótki opis</td>
-                <td>Przyjmij</td>
+                <th>Id</th>
+                <th>Maszyna</th>
+                <th>Zgłoszono</th>
+                <th>Zgłosił</th>
+                <th>Krótki opis</th>
+                <th>Przyjmij</th>
             </tr>
             <tr th:each="failuresList : ${failuresList}">
                 <span th:if="${failuresList.isAccept==0}">

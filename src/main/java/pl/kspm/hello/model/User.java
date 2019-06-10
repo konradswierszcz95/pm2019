@@ -10,6 +10,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String dtype;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "employeeId")
     private Employee employee;
@@ -139,5 +141,13 @@ public class User {
 
     public void setEndedFailures(List<Failure> endedFailures) {
         this.endedFailures = endedFailures;
+    }
+
+    public String getDtype() {
+        return dtype;
+    }
+
+    public void setDtype() {
+        this.dtype = "String";
     }
 }
