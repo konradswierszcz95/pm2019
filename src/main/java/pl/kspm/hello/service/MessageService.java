@@ -10,7 +10,9 @@ import pl.kspm.hello.repository.UserRepository;
 import pl.kspm.hello.tools.MsgObject;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,18 +42,21 @@ public class MessageService {
         return 0;
     }
 
-    public Iterable<Message> currentUserRecivedMsg() {
-        Iterable<Message> recivedMessages = this.messageRepository
+    public List<Message> currentUserRecivedMsg() {
+        List<Message> recivedMessages = this.messageRepository
                 .findAllByAddresseeEquals(userRepository
                         .findFirstById(UserContext.getCurrentUserId()));
+        List<Message> sortedList = sortMessages(recivedMessages);
 
-        return recivedMessages;
+        return sortedList;
     }
 
-    public Iterable<Message> currentUserSendedMsg() {
-        Iterable<Message> sendedMessenges = this.messageRepository
+    public List<Message> currentUserSendedMsg() {
+        List<Message> sendedMessenges = this.messageRepository
                 .findAllByAuthorEquals(userRepository.findFirstById(UserContext.getCurrentUserId()));
-        return sendedMessenges;
+        List<Message> sortedList = sortMessages(sendedMessenges);
+
+        return sortedList;
     }
 
     public Message getMessageById(long msgId, long currentUserId) {
@@ -75,5 +80,15 @@ public class MessageService {
     public int numberOfUnreadeMessages(User u) {
         int number=this.messageRepository.findAllByAddresseeEqualsAndReadedIsNull(u).size();
          return number;
+    }
+
+    public List<Message> sortMessages(List<Message> oldList) {
+        List<Message> sortedList = new ArrayList<>();
+
+        for (int i = oldList.size()-1;i>=0;i--) {
+            sortedList.add(oldList.get(i));
+        }
+
+        return sortedList;
     }
 }

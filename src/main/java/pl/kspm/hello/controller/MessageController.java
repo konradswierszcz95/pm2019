@@ -102,8 +102,10 @@ public class MessageController {
             model.addAttribute("case",answer);
             model.addAttribute("currentUserId",currentUserId);
 
-            message.setReaded("YES");
-            this.messageService.save(message);
+            if (message.getAddressee().getId()==UserContext.getCurrentUserId()) {
+                message.setReaded("YES");
+                this.messageService.save(message);
+            }
 
         } else {
             System.out.println("Błąd");

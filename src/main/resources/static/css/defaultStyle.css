@@ -54,7 +54,7 @@ a
     border-right: black 1px solid;
 }
 
-#navbar-left
+.navbar-left
 {
     float: left;
     padding: 4px 10px;

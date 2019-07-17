@@ -65,6 +65,10 @@ public class MachineService {
 
         String fileName = file.getOriginalFilename();
 
+        if (description.isEmpty()) {
+            description="BezNazwy";
+        }
+
         if (!file.isEmpty()) {
             Document document = new Document();
             document.setMachineDocument(this.getMachineById(id))

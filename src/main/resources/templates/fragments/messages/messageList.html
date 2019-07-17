@@ -6,11 +6,16 @@
                 <th class="toDes">Autor</th>
                 <th class="subjectDes">Temat</th>
                 <th class="dateDes">Otrzymano</th>
+                <th>Status</th>
             </tr>
             <tr th:each="recivedMsg : ${recivedMsg}">
                 <td th:text="${recivedMsg.author.employee.name+' '+recivedMsg.author.employee.surname}" class="msgList"></td>
                 <td><a th:href="@{'/sendMessage/openedMessage/'+${recivedMsg.id}}" th:text="${recivedMsg.subject}" class="msgList"></td>
                 <td th:text="${recivedMsg.created}" class="msgList"></td>
+                <td>
+                    <span th:if="${recivedMsg.readed}"><i class="demo-icon icon-envelope-open-o"></i></span>
+                    <span th:unless="${recivedMsg.readed}"><i class="demo-icon icon-mail"></i></span>
+                </td>
             </tr>
         </table>
     </div>

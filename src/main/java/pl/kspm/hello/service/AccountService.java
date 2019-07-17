@@ -11,7 +11,8 @@ import pl.kspm.hello.repository.UserRepository;
 import pl.kspm.hello.tools.StringCheck;
 
 @Service
-public class AccountService {
+public class
+AccountService {
     @Autowired
     UserRepository userRepository;
     @Autowired

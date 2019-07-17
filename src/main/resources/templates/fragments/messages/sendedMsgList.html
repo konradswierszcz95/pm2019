@@ -6,11 +6,16 @@
                 <th class="toDes">Adresat</th>
                 <th class="subjectDes">Temat</th>
                 <th class="dateDes">Wysłano</th>
+                <th>Status</th>
             </tr>
             <tr th:each="sendedMsg : ${sendedMsg}">
                 <td th:text="${sendedMsg.addressee.employee.name+' '+sendedMsg.addressee.employee.surname}" class="msgList"></td>
                 <td><a th:href="@{'/sendMessage/openedMessage/'+${sendedMsg.id}}" th:text="${sendedMsg.subject}" class="msgList"></td>
                 <td th:text="${sendedMsg.created}" class="msgList"></td>
+                <td>
+                    <span th:if="${sendedMsg.readed}"><i class="demo-icon icon-envelope-open-o"></i></span>
+                    <span th:unless="${sendedMsg.readed}"><i class="demo-icon icon-mail"></i></span>
+                </td>
             </tr>
         </table>
     </div>
